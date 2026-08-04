@@ -4,22 +4,20 @@
 
 :root {
   color-scheme: light;
-  --background: #f7faf9;
-  --foreground: #111318;
-  --muted: #5e6878;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --muted: #475569;
   --surface: #ffffff;
-  --border: #dbe5e1;
+  --border: #cbd5e1;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --background: #101418;
-    --foreground: #f5f7fa;
-    --muted: #a8b2c1;
-    --surface: #171d23;
-    --border: #2a3540;
-  }
+.dark {
+  color-scheme: dark;
+  --background: #020617;
+  --foreground: #f8fafc;
+  --muted: #cbd5e1;
+  --surface: #0f172a;
+  --border: #334155;
 }
 
 @media (prefers-contrast: more) {
@@ -46,8 +44,15 @@
     outline-offset: 4px;
   }
 
+  a {
+    color: inherit;
+  }
+
   a:focus-visible,
-  button:focus-visible {
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
     box-shadow: theme("boxShadow.focus");
     outline: 2px solid transparent;
   }

@@ -10,15 +10,23 @@ export const siteConfig = {
   locale: "es-DO",
   url: normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL ?? fallbackUrl),
   description:
-    "Portal de soluciones tecnológicas con conocimiento técnico, herramientas útiles y una experiencia web rápida, segura y accesible.",
+    "Encuentra soluciones claras para errores, configuraciones, comandos, herramientas y guías paso a paso.",
   mainNavigation: [
-    { href: "#arquitectura", label: "Arquitectura" },
-    { href: "#contenido", label: "Contenido" },
-    { href: "#herramientas", label: "Herramientas" }
+    { href: "/categorias", label: "Categorías" },
+    { href: "/herramientas", label: "Herramientas" },
+    { href: "/errores", label: "Centro de errores" },
+    { href: "/comunidad", label: "Comunidad" }
   ],
   footerNavigation: [
-    { href: "/robots.txt", label: "Robots" },
+    { href: "/sobre-nosotros", label: "Sobre Tesoluciona" },
+    { href: "/contacto", label: "Contacto" },
+    { href: "/privacidad", label: "Política de privacidad" },
+    { href: "/cookies", label: "Política de cookies" },
+    { href: "/terminos", label: "Términos y condiciones" },
+    { href: "/aviso-legal", label: "Aviso legal" },
+    { href: "/transparencia-editorial", label: "Transparencia editorial" },
+    { href: "/preferencias-privacidad", label: "Preferencias de privacidad" },
     { href: "/sitemap.xml", label: "Sitemap" },
-    { href: "/api/v1/health", label: "API" }
+    { href: "/rss.xml", label: "RSS" }
   ]
 } as const;
