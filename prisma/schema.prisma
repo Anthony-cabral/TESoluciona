@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ArticleStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ArticleDifficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum ToolStatus {
+  PLANNED
+  BETA
+  ACTIVE
+  DISABLED
+}
+
+model Author {
+  id          String   @id @default(uuid()) @db.Uuid
+  displayName String
+  slug        String   @unique
+  bio         String?
+  email       String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  articles    Article[]
+}
+
+model Category {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  articles    Article[]
+}
+
+model Tag {
+  id        String       @id @default(uuid()) @db.Uuid
+  name      String
+  slug      String       @unique
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  articles  ArticleTag[]
+}
+
+model Article {
+  id                   String            @id @default(uuid()) @db.Uuid
+  title                String
+  slug                 String            @unique
+  excerpt              String
+  simpleExplanation    String?
+  technicalExplanation String?
+  content              String
+  status               ArticleStatus     @default(DRAFT)
+  difficulty           ArticleDifficulty @default(BEGINNER)
+  readingTimeMinutes   Int               @default(1)
+  publishedAt          DateTime?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  authorId             String            @db.Uuid
+  categoryId           String            @db.Uuid
+  author               Author            @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  category             Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  tags                 ArticleTag[]
+
+  @@index([status, publishedAt])
+  @@index([categoryId])
+  @@index([authorId])
+}
+
+model ArticleTag {
+  articleId String  @db.Uuid
+  tagId     String  @db.Uuid
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+  @@index([tagId])
+}
+
+model ToolDefinition {
+  id          String     @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String     @unique
+  category    String
+  description String?
+  status      ToolStatus @default(PLANNED)
+  metadata    Json?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}

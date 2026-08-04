@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --background: #f7faf9;
+  --foreground: #111318;
+  --muted: #5e6878;
+  --surface: #ffffff;
+  --border: #dbe5e1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: #101418;
+    --foreground: #f5f7fa;
+    --muted: #a8b2c1;
+    --surface: #171d23;
+    --border: #2a3540;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --border: #111318;
+    --muted: #1f242d;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--foreground);
+    text-rendering: optimizeLegibility;
+  }
+
+  a,
+  button {
+    outline-offset: 4px;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    box-shadow: theme("boxShadow.focus");
+    outline: 2px solid transparent;
+  }
+
+  ::selection {
+    background: #acf4e4;
+    color: #111318;
+  }
+}
+
+@layer components {
+  .skip-link {
+    left: 1rem;
+    position: fixed;
+    top: 1rem;
+    transform: translateY(-150%);
+    z-index: 50;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+}
