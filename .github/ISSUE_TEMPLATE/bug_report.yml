@@ -1,0 +1,25 @@
+name: Reporte de bug
+description: Reporta un error reproducible en Tesoluciona.
+title: "fix: "
+labels:
+  - bug
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Resumen
+      description: Explica qué ocurre y qué esperabas que ocurriera.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+      description: Incluye rutas, datos de entrada y resultado observado.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Entorno
+      placeholder: Navegador, dispositivo, versión o despliegue

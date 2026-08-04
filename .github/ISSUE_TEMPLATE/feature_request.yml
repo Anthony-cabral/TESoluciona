@@ -1,0 +1,20 @@
+name: Solicitud de funcionalidad
+description: Propón una mejora para la plataforma.
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema o necesidad
+      description: Describe la necesidad del usuario.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta
+      description: Describe la solución esperada y su alcance.
+    validations:
+      required: true

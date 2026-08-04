@@ -1,0 +1,17 @@
+# Enable this file only with an Nginx build that includes the Brotli module.
+# It is intentionally not mounted as an active config in docker-compose.yml.
+
+brotli on;
+brotli_comp_level 5;
+brotli_static on;
+brotli_types
+  application/javascript
+  application/json
+  application/ld+json
+  application/rss+xml
+  application/xml
+  image/svg+xml
+  text/css
+  text/javascript
+  text/plain
+  text/xml;
