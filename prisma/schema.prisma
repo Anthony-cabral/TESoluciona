@@ -6,7 +6,7 @@ datasource db {
   provider = "postgresql"
 }
 
-enum ArticleStatus {
+enum ContentStatus {
   DRAFT
   REVIEW
   PUBLISHED
@@ -27,25 +27,122 @@ enum ToolStatus {
   DISABLED
 }
 
+enum UserStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  ARCHIVED
+}
+
+enum SearchResultStatus {
+  FOUND
+  NO_RESULTS
+}
+
+model User {
+  id              String           @id @default(uuid()) @db.Uuid
+  email           String           @unique
+  displayName     String
+  passwordHash    String?
+  status          UserStatus       @default(INVITED)
+  lastLoginAt     DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  deletedAt       DateTime?
+  roles           UserRole[]
+  author          Author?
+  comments        Comment[]
+  ratings         Rating[]
+  favorites       Favorite[]
+  readingHistory  ReadingHistory[]
+  auditLogs       AuditLog[]
+
+  @@index([status])
+  @@index([deletedAt])
+}
+
+model Role {
+  id          String           @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String           @unique
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  users       UserRole[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String           @id @default(uuid()) @db.Uuid
+  action      String
+  subject     String
+  slug        String           @unique
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  roles       RolePermission[]
+}
+
+model UserRole {
+  userId String @db.Uuid
+  roleId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@index([roleId])
+}
+
+model RolePermission {
+  roleId       String     @db.Uuid
+  permissionId String     @db.Uuid
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@index([permissionId])
+}
+
 model Author {
-  id          String   @id @default(uuid()) @db.Uuid
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String?   @unique @db.Uuid
   displayName String
-  slug        String   @unique
+  slug        String    @unique
   bio         String?
-  email       String?  @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  email       String?   @unique
+  avatarUrl   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   articles    Article[]
 }
 
 model Category {
-  id          String    @id @default(uuid()) @db.Uuid
-  name        String
-  slug        String    @unique
-  description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  articles    Article[]
+  id              String    @id @default(uuid()) @db.Uuid
+  name            String
+  slug            String    @unique
+  description     String
+  icon            String
+  imageUrl        String?
+  seoTitle        String
+  seoDescription  String
+  canonicalPath   String?
+  status          ContentStatus @default(PUBLISHED)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+  articles        Article[]
+
+  @@index([status])
+  @@index([deletedAt])
 }
 
 model Tag {
@@ -61,25 +158,54 @@ model Article {
   id                   String            @id @default(uuid()) @db.Uuid
   title                String
   slug                 String            @unique
-  excerpt              String
-  simpleExplanation    String?
-  technicalExplanation String?
-  content              String
-  status               ArticleStatus     @default(DRAFT)
+  summary              String
+  introduction         String
+  simpleExplanation    String
+  technicalExplanation String
+  symptoms             String[]          @default([])
+  causes               String[]          @default([])
+  prerequisites        String[]          @default([])
+  primarySteps         String[]          @default([])
+  alternatives         String[]          @default([])
+  warnings             String[]          @default([])
+  verification         String[]          @default([])
+  commands             Json?
+  status               ContentStatus     @default(DRAFT)
   difficulty           ArticleDifficulty @default(BEGINNER)
   readingTimeMinutes   Int               @default(1)
+  seoTitle             String
+  seoDescription       String
+  canonicalPath        String            @unique
   publishedAt          DateTime?
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
+  deletedAt            DateTime?
   authorId             String            @db.Uuid
   categoryId           String            @db.Uuid
   author               Author            @relation(fields: [authorId], references: [id], onDelete: Restrict)
   category             Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   tags                 ArticleTag[]
+  revisions            ArticleRevision[]
+  comments             Comment[]
 
   @@index([status, publishedAt])
   @@index([categoryId])
   @@index([authorId])
+  @@index([deletedAt])
+}
+
+model ArticleRevision {
+  id          String   @id @default(uuid()) @db.Uuid
+  articleId   String   @db.Uuid
+  title       String
+  summary     String
+  contentJson Json
+  reason      String?
+  createdAt   DateTime @default(now())
+  createdById String?  @db.Uuid
+  article     Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId, createdAt])
 }
 
 model ArticleTag {
@@ -92,14 +218,226 @@ model ArticleTag {
   @@index([tagId])
 }
 
-model ToolDefinition {
-  id          String     @id @default(uuid()) @db.Uuid
-  name        String
-  slug        String     @unique
-  category    String
-  description String?
-  status      ToolStatus @default(PLANNED)
-  metadata    Json?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+model ErrorEntry {
+  id              String          @id @default(uuid()) @db.Uuid
+  code            String
+  slug            String
+  productSlug     String
+  product         String
+  title           String
+  description     String
+  symptoms        String[]        @default([])
+  probableCauses  String[]        @default([])
+  diagnosis       String[]        @default([])
+  affectedVersions String[]       @default([])
+  warnings        String[]        @default([])
+  commands        Json?
+  status          ContentStatus   @default(DRAFT)
+  seoTitle        String
+  seoDescription  String
+  canonicalPath   String          @unique
+  reviewedAt      DateTime
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  deletedAt       DateTime?
+  solutions       ErrorSolution[]
+
+  @@unique([productSlug, slug])
+  @@index([code])
+  @@index([status, reviewedAt])
+  @@index([deletedAt])
+}
+
+model ErrorSolution {
+  id        String     @id @default(uuid()) @db.Uuid
+  errorId   String     @db.Uuid
+  title     String
+  kind      String
+  steps     String[]   @default([])
+  commands  Json?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  error     ErrorEntry @relation(fields: [errorId], references: [id], onDelete: Cascade)
+
+  @@index([errorId])
+}
+
+model Tool {
+  id             String      @id @default(uuid()) @db.Uuid
+  name           String
+  slug           String      @unique
+  categorySlug   String
+  description    String
+  status         ToolStatus  @default(PLANNED)
+  metadata       Json?
+  seoTitle       String
+  seoDescription String
+  canonicalPath  String      @unique
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  deletedAt      DateTime?
+
+  @@index([status])
+  @@index([categorySlug])
+  @@index([deletedAt])
+}
+
+model FAQ {
+  id        String   @id @default(uuid()) @db.Uuid
+  ownerType String
+  ownerId   String   @db.Uuid
+  question  String
+  answer    String
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerType, ownerId])
+}
+
+model Source {
+  id          String   @id @default(uuid()) @db.Uuid
+  ownerType   String
+  ownerId     String   @db.Uuid
+  label       String
+  publisher   String
+  url         String
+  lastChecked DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([ownerType, ownerId])
+}
+
+model RelatedContent {
+  id        String   @id @default(uuid()) @db.Uuid
+  fromType  String
+  fromId    String   @db.Uuid
+  toType    String
+  toId      String   @db.Uuid
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@unique([fromType, fromId, toType, toId])
+  @@index([fromType, fromId])
+  @@index([toType, toId])
+}
+
+model SearchQuery {
+  id             String             @id @default(uuid()) @db.Uuid
+  query          String
+  normalizedQuery String
+  resultCount    Int
+  status         SearchResultStatus
+  createdAt      DateTime           @default(now())
+  userAgentHash  String?
+  ipHash         String?
+
+  @@index([normalizedQuery])
+  @@index([status, createdAt])
+}
+
+model SearchSuggestion {
+  id        String   @id @default(uuid()) @db.Uuid
+  query     String
+  targetUrl String
+  weight    Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([query, targetUrl])
+  @@index([weight])
+}
+
+model Comment {
+  id        String        @id @default(uuid()) @db.Uuid
+  articleId String        @db.Uuid
+  userId    String?       @db.Uuid
+  parentId  String?       @db.Uuid
+  body      String
+  status    CommentStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  deletedAt DateTime?
+  article   Article       @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user      User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  parent    Comment?      @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[]     @relation("CommentReplies")
+
+  @@index([articleId, status])
+  @@index([userId])
+  @@index([deletedAt])
+}
+
+model Rating {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String?  @db.Uuid
+  contentType String
+  contentId   String   @db.Uuid
+  score       Int
+  createdAt   DateTime @default(now())
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([contentType, contentId])
+  @@index([userId])
+}
+
+model Favorite {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  contentType String
+  contentId   String   @db.Uuid
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contentType, contentId])
+  @@index([contentType, contentId])
+}
+
+model ReadingHistory {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  contentType String
+  contentId   String   @db.Uuid
+  readAt      DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+  @@index([contentType, contentId])
+}
+
+model NewsletterSubscription {
+  id            String    @id @default(uuid()) @db.Uuid
+  email         String    @unique
+  status        String    @default("PENDING")
+  consentVersion String?
+  confirmedAt   DateTime?
+  unsubscribedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([status])
+}
+
+model Redirect {
+  id           String   @id @default(uuid()) @db.Uuid
+  sourcePath   String   @unique
+  targetPath   String
+  statusCode   Int      @default(301)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String?  @db.Uuid
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([entity, entityId])
 }
