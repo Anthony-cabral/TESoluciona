@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 import "./globals.css";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ThemeScript } from "@/components/theme/theme-script";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -56,11 +58,12 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="es-DO" suppressHydrationWarning>
       <body className="font-sans antialiased">
+        <ThemeScript />
         <a
           className="skip-link rounded-md bg-ink-950 px-4 py-3 text-sm font-semibold text-white"
           href="#main-content"
