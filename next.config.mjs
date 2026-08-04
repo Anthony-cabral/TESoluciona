@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  agentRules: false,
   compress: true,
   output: "standalone",
   poweredByHeader: false,
