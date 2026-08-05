@@ -32,8 +32,15 @@ export type ArticleImage = {
   caption: string;
   width: number;
   height: number;
-  sourceType: "original-screenshot" | "original-mockup" | "external";
+  sourceType: "original-screenshot" | "external";
   creditId: string;
+};
+
+export type PendingImageRequirement = {
+  status: "pending";
+  requiredImage: string;
+  reason: string;
+  reviewedAt: string;
 };
 
 export type SolutionStep = {
@@ -44,6 +51,7 @@ export type SolutionStep = {
   menuPath?: string;
   command?: CommandSnippet;
   image?: ArticleImage;
+  imageRequirement?: PendingImageRequirement;
   expectedResult: string;
   commonError: string;
   howToContinue: string;

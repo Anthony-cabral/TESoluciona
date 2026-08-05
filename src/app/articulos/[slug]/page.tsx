@@ -11,7 +11,10 @@ import { Container } from "@/components/layout/container";
 import { JsonLd } from "@/components/seo/json-ld";
 import { articles, getArticleBySlug } from "@/features/solutions/articles";
 import { getCategoryBySlug } from "@/features/solutions/categories";
-import type { CommandSnippet } from "@/features/solutions/types";
+import type {
+  CommandSnippet,
+  PendingImageRequirement
+} from "@/features/solutions/types";
 import { articleJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo/json-ld";
 
 type ArticlePageProps = {
@@ -164,6 +167,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                       <CommandPanel command={step.command} compact />
                     ) : null}
                     {step.image ? <StepImage image={step.image} /> : null}
+                    {step.imageRequirement ? (
+                      <PendingImageNotice requirement={step.imageRequirement} />
+                    ) : null}
                     <div className="mt-5 grid gap-3 md:grid-cols-3">
                       <StepNote
                         label="Resultado esperado"
@@ -345,6 +351,26 @@ function StepNote({ label, value }: { label: string; value: string }) {
         {value}
       </p>
     </div>
+  );
+}
+
+function PendingImageNotice({
+  requirement
+}: {
+  requirement: PendingImageRequirement;
+}) {
+  return (
+    <aside className="mt-5 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-950 dark:border-amber-700 dark:bg-amber-950/60 dark:text-amber-100">
+      <p className="font-semibold">Imagen pendiente de licencia</p>
+      <p className="mt-2">
+        Este paso necesita una captura real antes de mostrar apoyo visual:
+        {" "}
+        {requirement.requiredImage}
+      </p>
+      <p className="mt-2">
+        Motivo: {requirement.reason} Revision: {requirement.reviewedAt}.
+      </p>
+    </aside>
   );
 }
 

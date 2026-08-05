@@ -63,160 +63,169 @@ const microsoftProductKey: Reference = {
 const activationNotice =
   "Tesoluciona solo documenta métodos oficiales y legítimos. Para activar Windows necesitas una licencia digital o una clave de producto válida.";
 
-const imageByCategory: Record<string, ArticleImage> = {
-  ciberseguridad: {
-    alt: "Mockup original de Tesoluciona mostrando una pantalla de seguridad del navegador con HTTPS resaltado.",
-    caption:
-      "Mockup de laboratorio para identificar indicadores de seguridad sin exponer datos reales.",
-    creditId: "navegador-configuracion-seguridad-laboratorio",
-    fileName: "navegador-configuracion-seguridad-laboratorio.svg",
-    height: 720,
-    id: "navegador-configuracion-seguridad-laboratorio",
-    sourceType: "original-mockup",
-    src: "/images/solutions/navegador-configuracion-seguridad-laboratorio.svg",
-    width: 1280
+type StepImageMap = Record<string, Record<number, ArticleImage>>;
+
+type PendingImageMap = Record<
+  string,
+  Record<number, { requiredImage: string; reason: string }>
+>;
+
+const imageReviewDate = "2026-08-05";
+
+const approvedStepImages: StepImageMap = {
+  "como-actualizar-google-chrome": {
+    4: {
+      alt: "Menu de Google Chrome en Windows 10 con el aviso New Chrome available y la opcion Relaunch to update.",
+      caption:
+        "Captura real de Chrome 135 en Windows 10 mostrando la accion Relaunch to update. La interfaz esta en ingles; equivale a reiniciar Chrome para aplicar la actualizacion.",
+      creditId: "chrome-135-relaunch-update-windows-10",
+      fileName: "chrome-135-relaunch-update-windows-10.png",
+      height: 480,
+      id: "chrome-135-relaunch-update-windows-10",
+      sourceType: "external",
+      src: "/images/solutions/chrome-135-relaunch-update-windows-10.png",
+      width: 640
+    }
   },
-  dns: {
-    alt: "Mockup original de Tesoluciona de una consola de Windows mostrando diagnóstico de red.",
-    caption:
-      "Mockup de laboratorio para comandos de diagnóstico de red en Windows.",
-    creditId: "cmd-ipconfig-gateway-laboratorio",
-    fileName: "cmd-ipconfig-gateway-laboratorio.svg",
-    height: 720,
-    id: "cmd-ipconfig-gateway-laboratorio",
-    sourceType: "original-mockup",
-    src: "/images/solutions/cmd-ipconfig-gateway-laboratorio.svg",
-    width: 1280
+  "como-cambiar-los-servidores-dns": {
+    1: {
+      alt: "Salida de ipconfig /all en Windows 11 mostrando servidores DNS actuales y puerta de enlace IPv4.",
+      caption:
+        "Captura real de Windows 11 Professional en italiano mostrando DNS actuales antes de cambiar la configuracion. Se redactaron identificadores persistentes.",
+      creditId: "windows-11-ipconfig-all-dns-current",
+      fileName: "windows-11-ipconfig-all-router-dns.png",
+      height: 798,
+      id: "windows-11-ipconfig-all-dns-current",
+      sourceType: "external",
+      src: "/images/solutions/windows-11-ipconfig-all-router-dns.png",
+      width: 1110
+    }
   },
-  "google-chrome": {
-    alt: "Mockup original de Tesoluciona de una página de configuración de navegador.",
-    caption:
-      "Mockup de laboratorio para revisar configuración y estado de navegadores.",
-    creditId: "navegador-configuracion-seguridad-laboratorio",
-    fileName: "navegador-configuracion-seguridad-laboratorio.svg",
-    height: 720,
-    id: "navegador-configuracion-seguridad-laboratorio",
-    sourceType: "original-mockup",
-    src: "/images/solutions/navegador-configuracion-seguridad-laboratorio.svg",
-    width: 1280
-  },
-  impresoras: {
-    alt: "Mockup original de Tesoluciona de preferencias de impresora con opción de doble cara resaltada.",
-    caption:
-      "Mockup de laboratorio para ubicar preferencias de impresión y dúplex.",
-    creditId: "impresora-preferencias-duplex-laboratorio",
-    fileName: "impresora-preferencias-duplex-laboratorio.svg",
-    height: 720,
-    id: "impresora-preferencias-duplex-laboratorio",
-    sourceType: "original-mockup",
-    src: "/images/solutions/impresora-preferencias-duplex-laboratorio.svg",
-    width: 1280
-  },
-  "microsoft-365": {
-    alt: "Mockup original de Tesoluciona del panel de perfiles de Outlook en un entorno de laboratorio.",
-    caption:
-      "Mockup de laboratorio para explicar perfiles y reparación de aplicaciones de Microsoft 365.",
-    creditId: "outlook-panel-perfiles-laboratorio",
-    fileName: "outlook-panel-perfiles-laboratorio.svg",
-    height: 720,
-    id: "outlook-panel-perfiles-laboratorio",
-    sourceType: "original-mockup",
-    src: "/images/solutions/outlook-panel-perfiles-laboratorio.svg",
-    width: 1280
-  },
-  "microsoft-edge": {
-    alt: "Mockup original de Tesoluciona de una página de configuración de navegador.",
-    caption:
-      "Mockup de laboratorio para revisar configuración y estado de navegadores.",
-    creditId: "navegador-configuracion-seguridad-laboratorio",
-    fileName: "navegador-configuracion-seguridad-laboratorio.svg",
-    height: 720,
-    id: "navegador-configuracion-seguridad-laboratorio",
-    sourceType: "original-mockup",
-    src: "/images/solutions/navegador-configuracion-seguridad-laboratorio.svg",
-    width: 1280
-  },
-  outlook: {
-    alt: "Mockup original de Tesoluciona del panel de perfiles de Outlook en un entorno de laboratorio.",
-    caption:
-      "Mockup de laboratorio para explicar perfiles y reparación de aplicaciones de Microsoft 365.",
-    creditId: "outlook-panel-perfiles-laboratorio",
-    fileName: "outlook-panel-perfiles-laboratorio.svg",
-    height: 720,
-    id: "outlook-panel-perfiles-laboratorio",
-    sourceType: "original-mockup",
-    src: "/images/solutions/outlook-panel-perfiles-laboratorio.svg",
-    width: 1280
-  },
-  redes: {
-    alt: "Mockup original de Tesoluciona de una consola de Windows mostrando ipconfig y puerta de enlace.",
-    caption:
-      "Mockup de laboratorio para reconocer IP local, máscara y puerta de enlace.",
-    creditId: "cmd-ipconfig-gateway-laboratorio",
-    fileName: "cmd-ipconfig-gateway-laboratorio.svg",
-    height: 720,
-    id: "cmd-ipconfig-gateway-laboratorio",
-    sourceType: "original-mockup",
-    src: "/images/solutions/cmd-ipconfig-gateway-laboratorio.svg",
-    width: 1280
-  },
-  routers: {
-    alt: "Mockup original de Tesoluciona de una consola de Windows mostrando ipconfig y puerta de enlace.",
-    caption:
-      "Mockup de laboratorio para reconocer IP local, máscara y puerta de enlace.",
-    creditId: "cmd-ipconfig-gateway-laboratorio",
-    fileName: "cmd-ipconfig-gateway-laboratorio.svg",
-    height: 720,
-    id: "cmd-ipconfig-gateway-laboratorio",
-    sourceType: "original-mockup",
-    src: "/images/solutions/cmd-ipconfig-gateway-laboratorio.svg",
-    width: 1280
-  },
-  windows: {
-    alt: "Mockup original de Tesoluciona de la página de Activación de Windows 11 mostrando licencia digital.",
-    caption:
-      "Mockup de laboratorio para ubicar Sistema > Activación sin mostrar datos personales.",
-    creditId: "windows-11-configuracion-sistema-activacion",
-    fileName: "windows-11-configuracion-sistema-activacion.svg",
-    height: 720,
-    id: "windows-11-configuracion-sistema-activacion",
-    sourceType: "original-mockup",
-    src: "/images/solutions/windows-11-configuracion-sistema-activacion.svg",
-    width: 1280
+  "como-saber-la-ip-del-router": {
+    2: {
+      alt: "Salida de ipconfig /all en Windows 11 mostrando la puerta de enlace predeterminada IPv4.",
+      caption:
+        "Captura real de Windows 11 Professional en italiano donde se identifica la puerta de enlace IPv4 del router. Se redactaron identificadores persistentes.",
+      creditId: "windows-11-ipconfig-all-router-gateway",
+      fileName: "windows-11-ipconfig-all-router-dns.png",
+      height: 798,
+      id: "windows-11-ipconfig-all-router-gateway",
+      sourceType: "external",
+      src: "/images/solutions/windows-11-ipconfig-all-router-dns.png",
+      width: 1110
+    }
   }
 };
 
-function getImageForCategory(categorySlug: string) {
-  return (
-    imageByCategory[categorySlug] ??
-    imageByCategory.windows ?? {
-      alt: "Mockup original de Tesoluciona de una pantalla de configuración.",
-      caption: "Mockup original de apoyo visual.",
-      creditId: "windows-11-configuracion-sistema-activacion",
-      fileName: "windows-11-configuracion-sistema-activacion.svg",
-      height: 720,
-      id: "windows-11-configuracion-sistema-activacion",
-      sourceType: "original-mockup",
-      src: "/images/solutions/windows-11-configuracion-sistema-activacion.svg",
-      width: 1280
+const pendingImageRequirements: PendingImageMap = {
+  "como-activar-windows-11-con-una-licencia-digital": {
+    1: {
+      reason:
+        "No hay todavia una captura propia segura ni una fuente externa con permiso claro para representar el flujo de licencia digital.",
+      requiredImage:
+        "Captura real de Windows 11 en Configuracion > Sistema > Activacion mostrando licencia digital sin clave de producto ni datos personales."
     }
-  );
-}
+  },
+  "como-actualizar-google-chrome": {
+    2: {
+      reason:
+        "La captura aprobada cubre el reinicio para actualizar, pero falta una fuente legal clara para la pantalla Informacion de Google Chrome.",
+      requiredImage:
+        "Captura real de Informacion de Google Chrome comprobando actualizaciones, sin perfil ni datos personales visibles."
+    }
+  },
+  "como-actualizar-microsoft-edge": {
+    2: {
+      reason:
+        "La captura de Edge encontrada tenia licencia CC0, pero mostraba configuracion de fuentes y extension, no el flujo de actualizacion.",
+      requiredImage:
+        "Captura real de Acerca de Microsoft Edge mostrando la comprobacion de actualizaciones."
+    }
+  },
+  "como-cambiar-los-servidores-dns": {
+    4: {
+      reason:
+        "La captura de ipconfig aprobada sirve para anotar los DNS actuales, pero falta la pantalla exacta de edicion de DNS.",
+      requiredImage:
+        "Captura real de Windows 11 en Red e Internet > DNS editando servidores DNS sin datos sensibles."
+    }
+  },
+  "como-comprobar-si-windows-esta-activado": {
+    1: {
+      reason:
+        "Las capturas oficiales revisadas no tienen permiso comercial claro para reutilizacion y no se publicaran sin autorizacion.",
+      requiredImage:
+        "Captura real de Windows 11 en Configuracion > Sistema > Activacion mostrando el estado de licencia."
+    }
+  },
+  "como-ejecutar-sfc-y-dism-correctamente": {
+    2: {
+      reason:
+        "Falta captura real producida en laboratorio o recurso externo legal que muestre la salida de SFC y DISM.",
+      requiredImage:
+        "Captura real de Terminal o CMD como administrador ejecutando SFC y DISM sin rutas internas ni datos personales."
+    }
+  },
+  "como-habilitar-la-impresion-a-doble-cara-por-defecto": {
+    2: {
+      reason:
+        "No se encontro una captura real con licencia verificable de preferencias de impresion duplex.",
+      requiredImage:
+        "Captura real de preferencias de impresora mostrando impresion a doble cara por defecto."
+    }
+  },
+  "como-reparar-microsoft-office": {
+    2: {
+      reason:
+        "Falta captura propia segura o fuente externa con permiso claro para la pantalla de reparacion de Microsoft 365.",
+      requiredImage:
+        "Captura real de Aplicaciones instaladas > Microsoft 365 > Modificar > Reparacion rapida o en linea."
+    }
+  },
+  "como-reparar-windows-update": {
+    2: {
+      reason:
+        "No se publicaran imagenes oficiales o de blogs sin licencia comercial verificable.",
+      requiredImage:
+        "Captura real de Windows Update o del solucionador de problemas de Windows 11."
+    }
+  },
+  "como-usar-el-solucionador-de-activacion": {
+    2: {
+      reason:
+        "El solucionador de activacion puede mostrar datos de licencia; falta captura propia segura con datos neutralizados.",
+      requiredImage:
+        "Captura real del solucionador de activacion de Windows 11 sin clave, cuenta ni identificadores visibles."
+    }
+  },
+  "outlook-no-abre-causas-y-soluciones": {
+    2: {
+      reason:
+        "No se encontro captura de Outlook con licencia verificable que no muestre cuentas o datos privados.",
+      requiredImage:
+        "Captura real de Outlook en modo seguro, panel de perfiles o error de inicio sin cuentas visibles."
+    }
+  }
+};
 
 function buildSolutionSteps(input: {
+  articleSlug: string;
   categorySlug: string;
   commands?: CommandSnippet[];
   steps: string[];
   verification: string[];
 }) {
-  const image = getImageForCategory(input.categorySlug);
-
   return input.steps.map((step, index) => {
     const command = input.commands?.[index];
+    const stepNumber = index + 1;
+    const image = approvedStepImages[input.articleSlug]?.[stepNumber];
+    const imageRequirement = image
+      ? undefined
+      : pendingImageRequirements[input.articleSlug]?.[stepNumber];
 
     return {
-      id: `paso-${index + 1}`,
-      title: `Paso ${index + 1} - ${step.replace(/\.$/, "")}`,
+      id: `paso-${stepNumber}`,
+      title: `Paso ${stepNumber} - ${step.replace(/\.$/, "")}`,
       objective:
         index === 0
           ? "Confirmar el estado inicial antes de modificar configuración."
@@ -242,9 +251,16 @@ function buildSolutionSteps(input: {
             ifDifferent:
               command.ifDifferent ??
               "Si aparece un error, copia el texto exacto y revisa la sección de alternativas antes de repetirlo."
+        }
+        : undefined,
+      image,
+      imageRequirement: imageRequirement
+        ? {
+            ...imageRequirement,
+            reviewedAt: imageReviewDate,
+            status: "pending" as const
           }
         : undefined,
-      image: index < 2 ? image : undefined,
       expectedResult:
         input.verification[index] ??
         "El sistema permite continuar sin mostrar un error nuevo.",
@@ -884,6 +900,7 @@ function buildArticle(input: {
       "Antes de modificar configuraciones del sistema, crea un punto de restauración o confirma que tus archivos importantes estén respaldados.",
     primarySteps: input.steps,
     solutionSteps: buildSolutionSteps({
+      articleSlug: input.slug,
       categorySlug: input.categorySlug,
       commands,
       steps: input.steps,

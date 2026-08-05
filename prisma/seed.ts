@@ -289,7 +289,7 @@ async function seed() {
             licenseId: originalImageLicense.id,
             sourceId: step.image.id,
             sourceType: step.image.sourceType,
-            sourceUrl: credit?.sourceUrl,
+            sourceUrl: credit?.originalSourceUrl,
             src: step.image.src,
             stepId: savedStep.id,
             width: step.image.width
