@@ -125,6 +125,18 @@ model Author {
   articles    Article[]
 }
 
+model Reviewer {
+  id               String         @id @default(uuid()) @db.Uuid
+  displayName      String
+  slug             String         @unique
+  role             String?
+  bio              String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  articlesReviewed Article[]      @relation("ArticleReviewer")
+  approvedImages   ArticleImage[] @relation("ImageApproval")
+}
+
 model Category {
   id              String    @id @default(uuid()) @db.Uuid
   name            String
@@ -181,17 +193,108 @@ model Article {
   updatedAt            DateTime          @updatedAt
   deletedAt            DateTime?
   authorId             String            @db.Uuid
+  reviewerId           String?           @db.Uuid
   categoryId           String            @db.Uuid
   author               Author            @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  reviewer             Reviewer?         @relation("ArticleReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
   category             Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   tags                 ArticleTag[]
   revisions            ArticleRevision[]
   comments             Comment[]
+  solutionSteps        SolutionStep[]
+  commandBlocks        CommandBlock[]
+  images               ArticleImage[]
 
   @@index([status, publishedAt])
   @@index([categoryId])
   @@index([authorId])
+  @@index([reviewerId])
   @@index([deletedAt])
+}
+
+model SolutionStep {
+  id             String         @id @default(uuid()) @db.Uuid
+  articleId      String         @db.Uuid
+  position       Int
+  title          String
+  objective      String
+  instructions   String[]       @default([])
+  menuPath       String?
+  expectedResult String
+  commonError    String
+  howToContinue  String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  article        Article        @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  commands       CommandBlock[]
+  images         ArticleImage[]
+
+  @@unique([articleId, position])
+  @@index([articleId])
+}
+
+model CommandBlock {
+  id             String        @id @default(uuid()) @db.Uuid
+  articleId      String        @db.Uuid
+  stepId         String?       @db.Uuid
+  position       Int           @default(0)
+  label          String
+  value          String
+  language       String        @default("text")
+  explanation    String?
+  expectedOutput String?
+  ifDifferent    String?
+  sensitive      Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  article        Article       @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  step           SolutionStep? @relation(fields: [stepId], references: [id], onDelete: SetNull)
+
+  @@index([articleId, position])
+  @@index([stepId])
+}
+
+model ImageLicense {
+  id                   String         @id @default(uuid()) @db.Uuid
+  name                 String
+  slug                 String         @unique
+  licenseUrl           String?
+  commercialUseAllowed Boolean        @default(false)
+  modificationsAllowed Boolean        @default(false)
+  requiresAttribution  Boolean        @default(true)
+  notes                String?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  images               ArticleImage[]
+}
+
+model ArticleImage {
+  id              String        @id @default(uuid()) @db.Uuid
+  articleId       String        @db.Uuid
+  stepId          String?       @db.Uuid
+  licenseId       String?       @db.Uuid
+  approvedById    String?       @db.Uuid
+  sourceId        String        @unique
+  fileName        String
+  src             String
+  alt             String
+  caption         String
+  width           Int
+  height          Int
+  sourceType      String
+  sourceUrl       String?
+  attributionText String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  article         Article       @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  step            SolutionStep? @relation(fields: [stepId], references: [id], onDelete: SetNull)
+  license         ImageLicense? @relation(fields: [licenseId], references: [id], onDelete: SetNull)
+  approvedBy      Reviewer?     @relation("ImageApproval", fields: [approvedById], references: [id], onDelete: SetNull)
+
+  @@index([articleId])
+  @@index([stepId])
+  @@index([licenseId])
+  @@index([approvedById])
 }
 
 model ArticleRevision {

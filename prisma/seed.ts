@@ -11,6 +11,7 @@ import { categories } from "../src/features/solutions/categories";
 import { errorEntries } from "../src/features/solutions/errors";
 import { tools } from "../src/features/solutions/tools";
 import { slugify } from "../src/lib/slug";
+import imageAttributions from "../content/image-attributions.json";
 
 const adapter = new PrismaPg({
   connectionString:
@@ -33,6 +34,10 @@ const statusMap = {
   review: ContentStatus.REVIEW
 } as const;
 
+const imageCreditById = new Map(
+  imageAttributions.map((credit) => [credit.id, credit])
+);
+
 async function seed() {
   const author = await prisma.author.upsert({
     create: {
@@ -46,6 +51,42 @@ async function seed() {
       displayName: "Equipo Tesoluciona"
     },
     where: { slug: "equipo-tesoluciona" }
+  });
+
+  const reviewer = await prisma.reviewer.upsert({
+    create: {
+      bio: "Revisión editorial y técnica de guías públicas sin datos privados de usuarios.",
+      displayName: "Revisión técnica Tesoluciona",
+      role: "Editor técnico",
+      slug: "revision-tecnica-tesoluciona"
+    },
+    update: {
+      bio: "Revisión editorial y técnica de guías públicas sin datos privados de usuarios.",
+      displayName: "Revisión técnica Tesoluciona",
+      role: "Editor técnico"
+    },
+    where: { slug: "revision-tecnica-tesoluciona" }
+  });
+
+  const originalImageLicense = await prisma.imageLicense.upsert({
+    create: {
+      commercialUseAllowed: true,
+      modificationsAllowed: true,
+      name: "Tesoluciona original asset",
+      notes:
+        "Mockups originales creados para documentación pública, sin capturas privadas ni datos reales.",
+      requiresAttribution: true,
+      slug: "tesoluciona-original-asset"
+    },
+    update: {
+      commercialUseAllowed: true,
+      modificationsAllowed: true,
+      name: "Tesoluciona original asset",
+      notes:
+        "Mockups originales creados para documentación pública, sin capturas privadas ni datos reales.",
+      requiresAttribution: true
+    },
+    where: { slug: "tesoluciona-original-asset" }
   });
 
   for (const category of categories) {
@@ -151,6 +192,7 @@ async function seed() {
         primarySteps: article.primarySteps,
         publishedAt: new Date(article.publishedAt),
         readingTimeMinutes: article.readingTimeMinutes,
+        reviewerId: reviewer.id,
         seoDescription: article.seo.description,
         seoTitle: article.seo.title,
         simpleExplanation: article.simpleExplanation,
@@ -175,6 +217,7 @@ async function seed() {
         primarySteps: article.primarySteps,
         publishedAt: new Date(article.publishedAt),
         readingTimeMinutes: article.readingTimeMinutes,
+        reviewerId: reviewer.id,
         seoDescription: article.seo.description,
         seoTitle: article.seo.title,
         simpleExplanation: article.simpleExplanation,
@@ -188,6 +231,87 @@ async function seed() {
       },
       where: { slug: article.slug }
     });
+
+    await prisma.commandBlock.deleteMany({
+      where: { articleId: savedArticle.id }
+    });
+    await prisma.articleImage.deleteMany({
+      where: { articleId: savedArticle.id }
+    });
+    await prisma.solutionStep.deleteMany({
+      where: { articleId: savedArticle.id }
+    });
+
+    for (const [stepIndex, step] of article.solutionSteps.entries()) {
+      const savedStep = await prisma.solutionStep.create({
+        data: {
+          articleId: savedArticle.id,
+          commonError: step.commonError,
+          expectedResult: step.expectedResult,
+          howToContinue: step.howToContinue,
+          instructions: step.instructions,
+          menuPath: step.menuPath,
+          objective: step.objective,
+          position: stepIndex,
+          title: step.title
+        }
+      });
+
+      if (step.command) {
+        await prisma.commandBlock.create({
+          data: {
+            articleId: savedArticle.id,
+            expectedOutput: step.command.expectedOutput,
+            explanation: step.command.explanation,
+            ifDifferent: step.command.ifDifferent,
+            label: step.command.label,
+            language: step.command.language ?? "text",
+            position: stepIndex,
+            stepId: savedStep.id,
+            value: step.command.value
+          }
+        });
+      }
+
+      if (step.image) {
+        const credit = imageCreditById.get(step.image.creditId);
+        await prisma.articleImage.create({
+          data: {
+            alt: step.image.alt,
+            approvedById: reviewer.id,
+            articleId: savedArticle.id,
+            attributionText:
+              credit?.attributionText ??
+              "Imagen documentada por Tesoluciona para guía pública.",
+            caption: step.image.caption,
+            fileName: step.image.fileName,
+            height: step.image.height,
+            licenseId: originalImageLicense.id,
+            sourceId: step.image.id,
+            sourceType: step.image.sourceType,
+            sourceUrl: credit?.sourceUrl,
+            src: step.image.src,
+            stepId: savedStep.id,
+            width: step.image.width
+          }
+        });
+      }
+    }
+
+    for (const [commandIndex, command] of article.commands.entries()) {
+      await prisma.commandBlock.create({
+        data: {
+          articleId: savedArticle.id,
+          expectedOutput: command.expectedOutput,
+          explanation: command.explanation,
+          ifDifferent: command.ifDifferent,
+          label: command.label,
+          language: command.language ?? "text",
+          position: commandIndex + article.solutionSteps.length,
+          value: command.value
+        }
+      });
+    }
 
     await prisma.articleTag.deleteMany({
       where: { articleId: savedArticle.id }
