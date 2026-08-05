@@ -17,6 +17,11 @@ export function buildContentSecurityPolicy(
     isDevelopment ? "http://127.0.0.1:*" : ""
   ].filter(Boolean);
 
+  const styleSrc = [
+    "'self'",
+    isDevelopment ? "'unsafe-inline'" : `'nonce-${nonce}'`
+  ].filter(Boolean);
+
   return [
     "default-src 'self'",
     "base-uri 'self'",
@@ -25,9 +30,11 @@ export function buildContentSecurityPolicy(
     "object-src 'none'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
-    "style-src 'self' 'unsafe-inline'",
+    `style-src ${styleSrc.join(" ")}`,
     `script-src ${scriptSrc.join(" ")}`,
     `connect-src ${connectSrc.join(" ")}`,
-    "upgrade-insecure-requests"
-  ].join("; ");
+    isDevelopment ? "" : "upgrade-insecure-requests"
+  ]
+    .filter(Boolean)
+    .join("; ");
 }

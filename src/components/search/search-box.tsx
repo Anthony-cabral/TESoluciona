@@ -85,7 +85,7 @@ export function SearchBox({
           onBlur={() => window.setTimeout(() => setFocused(false), 150)}
           onChange={(event) => setQuery(event.target.value)}
           onFocus={() => setFocused(true)}
-          placeholder="Busca un error, aplicación, comando o problema…"
+          placeholder="Busca un error, programa, comando o problema..."
           value={query}
         />
         {query ? (
@@ -99,7 +99,7 @@ export function SearchBox({
           </button>
         ) : null}
         <button
-          className="m-1 inline-flex items-center justify-center rounded-md bg-brand-700 px-4 text-sm font-semibold text-white transition hover:bg-brand-800"
+          className="m-1 inline-flex items-center justify-center rounded-md bg-brand-700 px-4 text-sm font-semibold text-white transition hover:bg-brand-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
           type="submit"
         >
           Buscar

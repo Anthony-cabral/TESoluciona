@@ -15,17 +15,18 @@ export const siteConfig = {
     { href: "/categorias", label: "Categorías" },
     { href: "/herramientas", label: "Herramientas" },
     { href: "/errores", label: "Centro de errores" },
-    { href: "/comunidad", label: "Comunidad" }
+    { href: "/guias", label: "Guías" }
   ],
   footerNavigation: [
     { href: "/sobre-nosotros", label: "Sobre Tesoluciona" },
     { href: "/contacto", label: "Contacto" },
-    { href: "/privacidad", label: "Política de privacidad" },
-    { href: "/cookies", label: "Política de cookies" },
+    { href: "/politica-de-privacidad", label: "Política de privacidad" },
+    { href: "/politica-de-cookies", label: "Política de cookies" },
     { href: "/terminos", label: "Términos y condiciones" },
     { href: "/aviso-legal", label: "Aviso legal" },
     { href: "/transparencia-editorial", label: "Transparencia editorial" },
     { href: "/preferencias-privacidad", label: "Preferencias de privacidad" },
+    { href: "/creditos-de-imagenes", label: "Créditos de imágenes" },
     { href: "/sitemap.xml", label: "Sitemap" },
     { href: "/rss.xml", label: "RSS" }
   ]

@@ -45,15 +45,7 @@ export function SiteHeader() {
               ))}
             </ul>
           </nav>
-          <div className="flex items-center gap-2">
-            <Link
-              className="hidden rounded-md border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-800 hover:border-brand-600 hover:text-brand-700 dark:border-slate-600 dark:text-slate-100 dark:hover:border-brand-300 md:inline-flex"
-              href="/admin"
-            >
-              Iniciar sesión
-            </Link>
-            <ThemeToggle />
-          </div>
+          <ThemeToggle />
         </div>
 
         <nav aria-label="Navegación móvil" className="xl:hidden">
