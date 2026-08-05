@@ -90,6 +90,26 @@ function scoreSearchableText(query: string, fields: string[]) {
   return { score, highlights: highlights.slice(0, 3) };
 }
 
+function commandText(
+  commands: {
+    label: string;
+    value: string;
+    explanation?: string;
+    expectedOutput?: string;
+    ifDifferent?: string;
+  }[]
+) {
+  return commands
+    .flatMap((command) => [
+      command.label,
+      command.value,
+      command.explanation ?? "",
+      command.expectedOutput ?? "",
+      command.ifDifferent ?? ""
+    ])
+    .join(" ");
+}
+
 export function searchContent(
   query: string,
   options?: {
@@ -108,14 +128,33 @@ export function searchContent(
   const candidates: SearchResult[] = [
     ...articles.map((article) => {
       const category = categoryBySlug.get(article.categorySlug);
+      const stepFields = article.solutionSteps.flatMap((step) => [
+        step.title,
+        step.objective,
+        step.menuPath ?? "",
+        step.expectedResult,
+        step.commonError,
+        step.howToContinue,
+        ...step.instructions,
+        ...(step.command ? [commandText([step.command])] : [])
+      ]);
       const { score, highlights } = scoreSearchableText(query, [
         article.title,
         article.summary,
         article.simpleExplanation,
         article.technicalExplanation,
         article.categorySlug,
+        article.appliesTo.join(" "),
         article.tags.join(" "),
-        article.keywords.join(" ")
+        article.keywords.join(" "),
+        article.symptoms.join(" "),
+        article.causes.join(" "),
+        article.primarySteps.join(" "),
+        article.alternatives.join(" "),
+        article.verification.join(" "),
+        commandText(article.commands),
+        article.faq.flatMap((item) => [item.question, item.answer]).join(" "),
+        stepFields.join(" ")
       ]);
       return {
         id: article.slug,
@@ -139,7 +178,14 @@ export function searchContent(
         entry.description,
         entry.product,
         entry.tags.join(" "),
-        entry.keywords.join(" ")
+        entry.keywords.join(" "),
+        entry.symptoms.join(" "),
+        entry.probableCauses.join(" "),
+        entry.diagnosis.join(" "),
+        entry.recommendedSolution.join(" "),
+        entry.alternatives.join(" "),
+        commandText(entry.commands),
+        entry.faq.flatMap((item) => [item.question, item.answer]).join(" ")
       ]);
       return {
         id: `${entry.productSlug}/${entry.slug}`,
@@ -151,7 +197,7 @@ export function searchContent(
         categorySlug: entry.categorySlug,
         updatedAt: entry.reviewedAt,
         relevance:
-          score + (normalize(entry.code) === normalize(query) ? 100 : 0),
+          score + (normalize(query).includes(normalize(entry.code)) ? 140 : 0),
         highlights,
         tags: entry.tags
       };
@@ -164,7 +210,10 @@ export function searchContent(
           tool.name,
           tool.description,
           tool.tags.join(" "),
-          tool.keywords.join(" ")
+          tool.keywords.join(" "),
+          tool.useCases.join(" "),
+          tool.examples.join(" "),
+          tool.faq.flatMap((item) => [item.question, item.answer]).join(" ")
         ]);
         return {
           id: tool.slug,
@@ -225,16 +274,27 @@ export function searchContent(
 export function getSearchSuggestions(query = "") {
   const normalizedQuery = normalize(query);
   const suggestions = [
-    "Error 0x80070005",
     "Windows no está activado",
-    "Configurar impresión a doble cara",
-    "Actualizar Google Chrome",
-    "Saber la dirección IP del router",
-    "Reparar Microsoft Defender",
-    "Configurar Outlook",
-    "Problemas de WiFi",
-    ...articles.flatMap((article) => [article.title, ...article.keywords]),
-    ...errorEntries.flatMap((entry) => [entry.code, entry.title]),
+    "Error 0x80070005",
+    "Cómo imprimir a doble cara",
+    "Outlook no abre",
+    "Cómo saber la IP del router",
+    "Microsoft Defender está desactivado",
+    "Cómo actualizar Google Chrome",
+    "WiFi conectado sin Internet",
+    "Activar Windows 11",
+    "Error 0xC004F213",
+    ...articles.flatMap((article) => [
+      article.title,
+      ...article.keywords,
+      ...article.appliesTo,
+      ...article.commands.map((command) => command.label)
+    ]),
+    ...errorEntries.flatMap((entry) => [
+      entry.code,
+      entry.title,
+      ...entry.tags
+    ]),
     ...tools.map((tool) => tool.name),
     ...categories.map((category) => category.name)
   ];

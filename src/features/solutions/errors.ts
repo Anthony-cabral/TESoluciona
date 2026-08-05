@@ -8,7 +8,7 @@ function buildError(input: Omit<ErrorEntry, "type" | "status">): ErrorEntry {
   };
 }
 
-export const errorEntries: ErrorEntry[] = [
+const baseErrorEntries: ErrorEntry[] = [
   buildError({
     code: "0x80070005",
     slug: "0x80070005",
@@ -555,6 +555,180 @@ export const errorEntries: ErrorEntry[] = [
     },
     keywords: ["sql server 18456", "login failed"]
   })
+];
+
+const activationErrorEntries: ErrorEntry[] = [
+  buildError({
+    code: "0xC004F211",
+    slug: "0xc004f211",
+    productSlug: "windows",
+    product: "Windows",
+    title: "Error 0xC004F211: Windows detectó cambio de hardware",
+    description:
+      "Windows informa que el hardware del dispositivo cambió y no encuentra una licencia digital que coincida con el equipo actual.",
+    symptoms: [
+      "Activación muestra 0xC004F211.",
+      "Windows dejó de activarse después de cambiar placa base u otro componente importante.",
+      "El solucionador pide confirmar el dispositivo asociado a la cuenta Microsoft."
+    ],
+    probableCauses: [
+      "La licencia digital estaba asociada al hardware anterior.",
+      "No se vinculó la cuenta Microsoft antes del cambio.",
+      "La licencia no permite transferencia.",
+      "La edición instalada no coincide con la licencia."
+    ],
+    diagnosis: [
+      "Confirmar edición instalada.",
+      "Comprobar que el equipo está conectado a Internet.",
+      "Revisar si la licencia era digital, de producto o OEM.",
+      "Ejecutar el solucionador de activación con la cuenta Microsoft correcta."
+    ],
+    recommendedSolution: [
+      "Inicia sesión como administrador.",
+      "Abre Configuración > Sistema > Activación.",
+      "Ejecuta Solucionar problemas.",
+      "Selecciona Cambié hardware en este dispositivo recientemente si aparece.",
+      "Elige el dispositivo correcto y activa solo si la licencia lo permite."
+    ],
+    alternatives: [
+      "Introducir una clave de producto válida si la licencia era retail.",
+      "Contactar al fabricante si el equipo venía con Windows preinstalado.",
+      "Comprar una licencia legítima si no existe licencia transferible."
+    ],
+    commands: [
+      {
+        label: "Abrir Activación",
+        value: "ms-settings:activation",
+        language: "cmd"
+      }
+    ],
+    warnings: [
+      "Tesoluciona solo documenta métodos oficiales y legítimos. Para activar Windows necesitas una licencia digital o una clave de producto válida.",
+      "No uses activadores, KMS públicos ni scripts para evadir licencia."
+    ],
+    affectedVersions: ["Windows 11", "Windows 10"],
+    reviewedAt: "2026-08-04",
+    faq: [
+      {
+        question: "¿Siempre se puede transferir la licencia?",
+        answer:
+          "No. Depende del tipo de licencia y de los términos aplicables. Las licencias OEM pueden estar ligadas al equipo original."
+      }
+    ],
+    references: [
+      {
+        label: "Get help with Windows activation errors",
+        publisher: "Microsoft Support",
+        url: "https://support.microsoft.com/en-US/Windows/activation/get-help-with-windows-activation-errors"
+      },
+      {
+        label: "Reactivating Windows after a hardware change",
+        publisher: "Microsoft Support",
+        url: "https://support.microsoft.com/en-us/windows/activation/reactivating-windows-after-a-hardware-change"
+      }
+    ],
+    relatedSlugs: [
+      "como-reactivar-windows-despues-de-cambiar-hardware",
+      "como-usar-el-solucionador-de-activacion"
+    ],
+    categorySlug: "windows",
+    tags: ["windows", "activación", "hardware", "0xc004f211"],
+    seo: {
+      title: "Error 0xC004F211 al activar Windows",
+      description:
+        "Causas y solución oficial para 0xC004F211 después de cambiar hardware en Windows.",
+      canonicalPath: "/errores/windows/0xc004f211"
+    },
+    keywords: ["0xc004f211", "hardware changed", "activacion windows"]
+  }),
+  buildError({
+    code: "0xC004F213",
+    slug: "0xc004f213",
+    productSlug: "windows",
+    product: "Windows",
+    title: "Error 0xC004F213: no se encontró una clave de producto",
+    description:
+      "Windows no encontró una clave de producto o licencia digital válida para el dispositivo y la edición instalada.",
+    symptoms: [
+      "Activación muestra 0xC004F213.",
+      "Windows indica que no se encontró una clave de producto.",
+      "El error aparece tras instalación limpia o cambio de hardware."
+    ],
+    probableCauses: [
+      "La edición instalada no coincide con la licencia.",
+      "La licencia digital no está asociada al hardware actual.",
+      "No se introdujo una clave válida.",
+      "El equipo nuevo no trae clave preinstalada o requiere soporte del fabricante."
+    ],
+    diagnosis: [
+      "Confirmar edición de Windows.",
+      "Revisar si tienes licencia digital o clave de producto.",
+      "Iniciar sesión con la cuenta Microsoft asociada si aplica.",
+      "Consultar el origen de la compra o al fabricante."
+    ],
+    recommendedSolution: [
+      "Abre Configuración > Sistema > Activación.",
+      "Confirma que la edición coincida con tu licencia.",
+      "Introduce una clave válida desde Cambiar clave de producto si tienes una.",
+      "Ejecuta el solucionador si tenías licencia digital vinculada.",
+      "Contacta soporte oficial si no tienes licencia digital ni clave."
+    ],
+    alternatives: [
+      "Reinstalar la edición que coincide con la licencia.",
+      "Comprar una licencia legítima desde un canal autorizado.",
+      "Contactar al vendedor si la clave válida no funciona."
+    ],
+    commands: [
+      {
+        label: "Ver expiración",
+        value: "slmgr /xpr",
+        language: "cmd"
+      }
+    ],
+    warnings: [
+      "Tesoluciona solo documenta métodos oficiales y legítimos. Para activar Windows necesitas una licencia digital o una clave de producto válida.",
+      "No compartas tu clave completa en capturas, tickets públicos o chats."
+    ],
+    affectedVersions: ["Windows 11", "Windows 10"],
+    reviewedAt: "2026-08-04",
+    faq: [
+      {
+        question: "¿Puedo usar una clave genérica para activar?",
+        answer:
+          "No. Una clave genérica no sustituye una licencia válida y no debe presentarse como activación legítima."
+      }
+    ],
+    references: [
+      {
+        label: "Get help with Windows activation errors",
+        publisher: "Microsoft Support",
+        url: "https://support.microsoft.com/en-US/Windows/activation/get-help-with-windows-activation-errors"
+      },
+      {
+        label: "Find your Windows product key",
+        publisher: "Microsoft Support",
+        url: "https://support.microsoft.com/en-US/Windows/activation/find-your-windows-product-key"
+      }
+    ],
+    relatedSlugs: [
+      "error-0xc004f213-no-se-encontro-una-clave-de-producto",
+      "como-activar-windows-con-una-clave-de-producto-valida"
+    ],
+    categorySlug: "windows",
+    tags: ["windows", "activación", "clave producto", "0xc004f213"],
+    seo: {
+      title: "Error 0xC004F213 al activar Windows",
+      description:
+        "Qué significa 0xC004F213 y cómo resolverlo con licencia digital o clave válida.",
+      canonicalPath: "/errores/windows/0xc004f213"
+    },
+    keywords: ["0xc004f213", "no product key found", "clave producto windows"]
+  })
+];
+
+export const errorEntries: ErrorEntry[] = [
+  ...baseErrorEntries,
+  ...activationErrorEntries
 ];
 
 export function getErrorEntry(productSlug: string, slug: string) {

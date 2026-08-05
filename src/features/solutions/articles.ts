@@ -1,5 +1,6 @@
 import type {
   Article,
+  ArticleImage,
   CommandSnippet,
   FAQ,
   Reference
@@ -41,6 +42,222 @@ const chromeErrors: Reference = {
   url: "https://support.google.com/chrome/answer/6098869"
 };
 
+const microsoftActivationErrors: Reference = {
+  label: "Get help with Windows activation errors",
+  publisher: "Microsoft Support",
+  url: "https://support.microsoft.com/en-US/Windows/activation/get-help-with-windows-activation-errors"
+};
+
+const microsoftHardwareReactivation: Reference = {
+  label: "Reactivating Windows after a hardware change",
+  publisher: "Microsoft Support",
+  url: "https://support.microsoft.com/en-us/windows/activation/reactivating-windows-after-a-hardware-change"
+};
+
+const microsoftProductKey: Reference = {
+  label: "Find your Windows product key",
+  publisher: "Microsoft Support",
+  url: "https://support.microsoft.com/en-US/Windows/activation/find-your-windows-product-key"
+};
+
+const activationNotice =
+  "Tesoluciona solo documenta métodos oficiales y legítimos. Para activar Windows necesitas una licencia digital o una clave de producto válida.";
+
+const imageByCategory: Record<string, ArticleImage> = {
+  ciberseguridad: {
+    alt: "Mockup original de Tesoluciona mostrando una pantalla de seguridad del navegador con HTTPS resaltado.",
+    caption:
+      "Mockup de laboratorio para identificar indicadores de seguridad sin exponer datos reales.",
+    creditId: "navegador-configuracion-seguridad-laboratorio",
+    fileName: "navegador-configuracion-seguridad-laboratorio.svg",
+    height: 720,
+    id: "navegador-configuracion-seguridad-laboratorio",
+    sourceType: "original-mockup",
+    src: "/images/solutions/navegador-configuracion-seguridad-laboratorio.svg",
+    width: 1280
+  },
+  dns: {
+    alt: "Mockup original de Tesoluciona de una consola de Windows mostrando diagnóstico de red.",
+    caption:
+      "Mockup de laboratorio para comandos de diagnóstico de red en Windows.",
+    creditId: "cmd-ipconfig-gateway-laboratorio",
+    fileName: "cmd-ipconfig-gateway-laboratorio.svg",
+    height: 720,
+    id: "cmd-ipconfig-gateway-laboratorio",
+    sourceType: "original-mockup",
+    src: "/images/solutions/cmd-ipconfig-gateway-laboratorio.svg",
+    width: 1280
+  },
+  "google-chrome": {
+    alt: "Mockup original de Tesoluciona de una página de configuración de navegador.",
+    caption:
+      "Mockup de laboratorio para revisar configuración y estado de navegadores.",
+    creditId: "navegador-configuracion-seguridad-laboratorio",
+    fileName: "navegador-configuracion-seguridad-laboratorio.svg",
+    height: 720,
+    id: "navegador-configuracion-seguridad-laboratorio",
+    sourceType: "original-mockup",
+    src: "/images/solutions/navegador-configuracion-seguridad-laboratorio.svg",
+    width: 1280
+  },
+  impresoras: {
+    alt: "Mockup original de Tesoluciona de preferencias de impresora con opción de doble cara resaltada.",
+    caption:
+      "Mockup de laboratorio para ubicar preferencias de impresión y dúplex.",
+    creditId: "impresora-preferencias-duplex-laboratorio",
+    fileName: "impresora-preferencias-duplex-laboratorio.svg",
+    height: 720,
+    id: "impresora-preferencias-duplex-laboratorio",
+    sourceType: "original-mockup",
+    src: "/images/solutions/impresora-preferencias-duplex-laboratorio.svg",
+    width: 1280
+  },
+  "microsoft-365": {
+    alt: "Mockup original de Tesoluciona del panel de perfiles de Outlook en un entorno de laboratorio.",
+    caption:
+      "Mockup de laboratorio para explicar perfiles y reparación de aplicaciones de Microsoft 365.",
+    creditId: "outlook-panel-perfiles-laboratorio",
+    fileName: "outlook-panel-perfiles-laboratorio.svg",
+    height: 720,
+    id: "outlook-panel-perfiles-laboratorio",
+    sourceType: "original-mockup",
+    src: "/images/solutions/outlook-panel-perfiles-laboratorio.svg",
+    width: 1280
+  },
+  "microsoft-edge": {
+    alt: "Mockup original de Tesoluciona de una página de configuración de navegador.",
+    caption:
+      "Mockup de laboratorio para revisar configuración y estado de navegadores.",
+    creditId: "navegador-configuracion-seguridad-laboratorio",
+    fileName: "navegador-configuracion-seguridad-laboratorio.svg",
+    height: 720,
+    id: "navegador-configuracion-seguridad-laboratorio",
+    sourceType: "original-mockup",
+    src: "/images/solutions/navegador-configuracion-seguridad-laboratorio.svg",
+    width: 1280
+  },
+  outlook: {
+    alt: "Mockup original de Tesoluciona del panel de perfiles de Outlook en un entorno de laboratorio.",
+    caption:
+      "Mockup de laboratorio para explicar perfiles y reparación de aplicaciones de Microsoft 365.",
+    creditId: "outlook-panel-perfiles-laboratorio",
+    fileName: "outlook-panel-perfiles-laboratorio.svg",
+    height: 720,
+    id: "outlook-panel-perfiles-laboratorio",
+    sourceType: "original-mockup",
+    src: "/images/solutions/outlook-panel-perfiles-laboratorio.svg",
+    width: 1280
+  },
+  redes: {
+    alt: "Mockup original de Tesoluciona de una consola de Windows mostrando ipconfig y puerta de enlace.",
+    caption:
+      "Mockup de laboratorio para reconocer IP local, máscara y puerta de enlace.",
+    creditId: "cmd-ipconfig-gateway-laboratorio",
+    fileName: "cmd-ipconfig-gateway-laboratorio.svg",
+    height: 720,
+    id: "cmd-ipconfig-gateway-laboratorio",
+    sourceType: "original-mockup",
+    src: "/images/solutions/cmd-ipconfig-gateway-laboratorio.svg",
+    width: 1280
+  },
+  routers: {
+    alt: "Mockup original de Tesoluciona de una consola de Windows mostrando ipconfig y puerta de enlace.",
+    caption:
+      "Mockup de laboratorio para reconocer IP local, máscara y puerta de enlace.",
+    creditId: "cmd-ipconfig-gateway-laboratorio",
+    fileName: "cmd-ipconfig-gateway-laboratorio.svg",
+    height: 720,
+    id: "cmd-ipconfig-gateway-laboratorio",
+    sourceType: "original-mockup",
+    src: "/images/solutions/cmd-ipconfig-gateway-laboratorio.svg",
+    width: 1280
+  },
+  windows: {
+    alt: "Mockup original de Tesoluciona de la página de Activación de Windows 11 mostrando licencia digital.",
+    caption:
+      "Mockup de laboratorio para ubicar Sistema > Activación sin mostrar datos personales.",
+    creditId: "windows-11-configuracion-sistema-activacion",
+    fileName: "windows-11-configuracion-sistema-activacion.svg",
+    height: 720,
+    id: "windows-11-configuracion-sistema-activacion",
+    sourceType: "original-mockup",
+    src: "/images/solutions/windows-11-configuracion-sistema-activacion.svg",
+    width: 1280
+  }
+};
+
+function getImageForCategory(categorySlug: string) {
+  return (
+    imageByCategory[categorySlug] ??
+    imageByCategory.windows ?? {
+      alt: "Mockup original de Tesoluciona de una pantalla de configuración.",
+      caption: "Mockup original de apoyo visual.",
+      creditId: "windows-11-configuracion-sistema-activacion",
+      fileName: "windows-11-configuracion-sistema-activacion.svg",
+      height: 720,
+      id: "windows-11-configuracion-sistema-activacion",
+      sourceType: "original-mockup",
+      src: "/images/solutions/windows-11-configuracion-sistema-activacion.svg",
+      width: 1280
+    }
+  );
+}
+
+function buildSolutionSteps(input: {
+  categorySlug: string;
+  commands?: CommandSnippet[];
+  steps: string[];
+  verification: string[];
+}) {
+  const image = getImageForCategory(input.categorySlug);
+
+  return input.steps.map((step, index) => {
+    const command = input.commands?.[index];
+
+    return {
+      id: `paso-${index + 1}`,
+      title: `Paso ${index + 1} - ${step.replace(/\.$/, "")}`,
+      objective:
+        index === 0
+          ? "Confirmar el estado inicial antes de modificar configuración."
+          : "Aplicar el siguiente cambio de forma controlada.",
+      instructions: [
+        step,
+        "Lee cualquier mensaje antes de aceptar cambios.",
+        "Anota el resultado o código exacto si aparece una alerta."
+      ],
+      menuPath:
+        input.categorySlug === "windows"
+          ? "Inicio > Configuración > Sistema"
+          : undefined,
+      command: command
+        ? {
+            ...command,
+            explanation:
+              command.explanation ??
+              `Este comando ayuda a ejecutar la acción "${command.label}" con una herramienta integrada.`,
+            expectedOutput:
+              command.expectedOutput ??
+              "Debe mostrarse un resultado sin errores o un mensaje claro para continuar el diagnóstico.",
+            ifDifferent:
+              command.ifDifferent ??
+              "Si aparece un error, copia el texto exacto y revisa la sección de alternativas antes de repetirlo."
+          }
+        : undefined,
+      image: index < 2 ? image : undefined,
+      expectedResult:
+        input.verification[index] ??
+        "El sistema permite continuar sin mostrar un error nuevo.",
+      commonError:
+        "Cerrar la ventana antes de leer el mensaje o ejecutar el paso con permisos insuficientes.",
+      howToContinue:
+        index === input.steps.length - 1
+          ? "Continúa con la verificación final."
+          : "Si el resultado coincide, avanza al siguiente paso."
+    };
+  });
+}
+
 const genericFaq: FAQ[] = [
   {
     question: "¿Necesito ser administrador?",
@@ -54,6 +271,555 @@ const genericFaq: FAQ[] = [
   }
 ];
 
+const activationArticles: Article[] = [
+  buildArticle({
+    title: "Cómo activar Windows 11 con una licencia digital",
+    slug: "como-activar-windows-11-con-una-licencia-digital",
+    summary:
+      "Activa Windows 11 con una licencia digital vinculada al hardware o a tu cuenta Microsoft, sin usar claves no autorizadas.",
+    categorySlug: "windows",
+    tags: ["windows 11", "activación", "licencia digital", "microsoft"],
+    keywords: [
+      "activar windows 11 licencia digital",
+      "licencia digital windows",
+      "windows activated with digital license"
+    ],
+    appliesTo: ["Windows 11", "Windows 10"],
+    symptoms: [
+      "Windows muestra que no está activado después de instalar.",
+      "La activación depende de una licencia digital previa.",
+      "Quieres confirmar si tu cuenta Microsoft está vinculada."
+    ],
+    causes: [
+      "El equipo no está conectado a Internet.",
+      "La licencia digital no está vinculada a la cuenta usada.",
+      "La edición instalada no coincide con la licencia.",
+      "Hubo un cambio de hardware importante."
+    ],
+    steps: [
+      "Conecta el equipo a Internet.",
+      "Abre Configuración > Sistema > Activación.",
+      "Comprueba si aparece licencia digital vinculada a tu cuenta Microsoft.",
+      "Inicia sesión con la cuenta Microsoft asociada si Windows lo solicita.",
+      "Ejecuta el solucionador de activación solo si Windows sigue sin activarse."
+    ],
+    commands: [
+      {
+        label: "Abrir Activación",
+        value: "ms-settings:activation",
+        language: "cmd",
+        explanation:
+          "Abre directamente la página oficial de Activación en Configuración.",
+        expectedOutput: "Debe abrir Configuración en Sistema > Activación.",
+        ifDifferent:
+          "Si no abre, entra manualmente desde Inicio > Configuración > Sistema > Activación."
+      }
+    ],
+    warnings: [activationNotice],
+    verification: [
+      "La página de Activación indica que Windows está activado.",
+      "Si la licencia está vinculada, el mensaje menciona tu cuenta Microsoft.",
+      "No aparece marca de agua de activación tras reiniciar."
+    ],
+    references: [microsoftActivation, microsoftHardwareReactivation],
+    relatedSlugs: [
+      "como-comprobar-si-windows-esta-activado",
+      "como-usar-el-solucionador-de-activacion"
+    ]
+  }),
+  buildArticle({
+    title: "Cómo activar Windows con una clave de producto válida",
+    slug: "como-activar-windows-con-una-clave-de-producto-valida",
+    summary:
+      "Introduce una clave de producto válida de 25 caracteres desde Configuración o con slmgr sin exponer la clave.",
+    categorySlug: "windows",
+    tags: ["windows", "clave de producto", "activación", "licencia"],
+    keywords: [
+      "activar windows clave producto",
+      "change product key",
+      "slmgr ipk"
+    ],
+    appliesTo: ["Windows 11", "Windows 10"],
+    symptoms: [
+      "Tienes una clave legítima y Windows no está activado.",
+      "Cambiaste de edición o reinstalaste Windows.",
+      "Necesitas introducir la clave después de la instalación."
+    ],
+    causes: [
+      "La clave no se introdujo durante la instalación.",
+      "La edición instalada no coincide con la clave.",
+      "La clave ya fue usada de una forma no permitida por la licencia.",
+      "El equipo no puede contactar los servicios de activación."
+    ],
+    steps: [
+      "Confirma que tu clave proviene de Microsoft, fabricante o vendedor autorizado.",
+      "Abre Configuración > Sistema > Activación.",
+      "Selecciona Cambiar clave de producto.",
+      "Escribe la clave de 25 caracteres sin compartirla por chat ni capturas.",
+      "Espera la validación y anota cualquier código de error."
+    ],
+    commands: [
+      {
+        label: "Instalar clave válida",
+        value: "slmgr /ipk XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
+        language: "cmd",
+        explanation:
+          "Instala una clave de producto válida. Sustituye las X por tu clave real y no la compartas.",
+        expectedOutput:
+          "Windows debe informar que la clave se instaló correctamente.",
+        ifDifferent:
+          "Si muestra error, revisa edición, conexión e historial de compra antes de intentarlo otra vez."
+      },
+      {
+        label: "Activar en línea",
+        value: "slmgr /ato",
+        language: "cmd",
+        explanation:
+          "Solicita activación en línea usando la clave válida ya instalada.",
+        expectedOutput:
+          "Debe indicar activación correcta o devolver un código oficial.",
+        ifDifferent:
+          "Busca el código en la documentación oficial de errores de activación."
+      }
+    ],
+    warnings: [activationNotice],
+    verification: [
+      "Activación muestra Windows está activado.",
+      "slmgr /xpr indica activación permanente o un periodo válido según licencia.",
+      "No se usaron claves genéricas, activadores ni servidores no autorizados."
+    ],
+    references: [microsoftActivation, microsoftProductKey],
+    relatedSlugs: [
+      "que-hacer-cuando-una-clave-valida-no-funciona",
+      "windows-home-instalado-con-licencia-de-windows-pro"
+    ]
+  }),
+  buildArticle({
+    title: "Cómo usar el solucionador de activación",
+    slug: "como-usar-el-solucionador-de-activacion",
+    summary:
+      "Usa el solucionador oficial cuando Windows no se activa y existe una licencia digital asociada.",
+    categorySlug: "windows",
+    tags: ["windows", "solucionador", "activación"],
+    keywords: ["activation troubleshooter", "solucionador activacion windows"],
+    appliesTo: ["Windows 11", "Windows 10"],
+    symptoms: [
+      "Windows indica que no puede activarse.",
+      "Cambiaste hardware recientemente.",
+      "La licencia digital estaba vinculada a una cuenta Microsoft."
+    ],
+    causes: [
+      "Cambio de hardware importante.",
+      "Cuenta Microsoft distinta a la vinculada.",
+      "Edición instalada diferente.",
+      "Activación pendiente por conectividad."
+    ],
+    steps: [
+      "Inicia sesión como administrador.",
+      "Abre Configuración > Sistema > Activación.",
+      "Selecciona Solucionar problemas.",
+      "Si aparece la opción, elige Cambié hardware en este dispositivo recientemente.",
+      "Selecciona el dispositivo correcto y confirma la activación."
+    ],
+    warnings: [activationNotice],
+    verification: [
+      "El solucionador informa activación completada.",
+      "La página de Activación deja de mostrar error.",
+      "El dispositivo seleccionado corresponde al equipo actual."
+    ],
+    references: [microsoftHardwareReactivation, microsoftActivationErrors],
+    relatedSlugs: [
+      "como-reactivar-windows-despues-de-cambiar-hardware",
+      "error-0xc004f211-despues-de-cambiar-hardware"
+    ]
+  }),
+  buildArticle({
+    title: "Cómo reactivar Windows después de cambiar hardware",
+    slug: "como-reactivar-windows-despues-de-cambiar-hardware",
+    summary:
+      "Prepara y reactiva Windows después de cambiar placa base u otro hardware importante usando métodos oficiales.",
+    categorySlug: "windows",
+    tags: ["windows", "hardware", "licencia digital", "reactivación"],
+    keywords: [
+      "reactivar windows hardware",
+      "0xc004f211",
+      "motherboard activation"
+    ],
+    appliesTo: ["Windows 11", "Windows 10"],
+    symptoms: [
+      "Windows dejó de activarse tras cambiar la placa base.",
+      "Aparece error 0xC004F211.",
+      "El solucionador muestra dispositivos vinculados."
+    ],
+    causes: [
+      "La licencia digital está asociada al hardware anterior.",
+      "La cuenta Microsoft no estaba vinculada antes del cambio.",
+      "La edición actual no coincide con la licencia.",
+      "La licencia OEM puede no transferirse."
+    ],
+    steps: [
+      "Antes del cambio, confirma que Windows está activado.",
+      "Vincula la licencia digital a tu cuenta Microsoft.",
+      "Después del cambio, conecta el equipo a Internet.",
+      "Ejecuta el solucionador de activación.",
+      "Selecciona el dispositivo correcto y activa solo si la licencia lo permite."
+    ],
+    warnings: [
+      activationNotice,
+      "Una licencia OEM preinstalada puede estar ligada al dispositivo original y no siempre se transfiere."
+    ],
+    verification: [
+      "La página de Activación muestra licencia activa.",
+      "La edición de Windows coincide con la licencia original.",
+      "No quedan errores 0xC004F211 o 0xC004F213."
+    ],
+    references: [microsoftHardwareReactivation, microsoftActivationErrors],
+    relatedSlugs: [
+      "error-0xc004f211-despues-de-cambiar-hardware",
+      "error-0xc004f213-no-se-encontro-una-clave-de-producto"
+    ]
+  }),
+  buildArticle({
+    title: "Cómo consultar el estado con slmgr /xpr",
+    slug: "como-consultar-el-estado-con-slmgr-xpr",
+    summary:
+      "Usa slmgr /xpr para revisar si Windows está activado de forma permanente o si tiene expiración.",
+    categorySlug: "windows",
+    tags: ["windows", "slmgr", "licencia", "cmd"],
+    keywords: ["slmgr xpr", "windows activation expiration", "estado licencia"],
+    symptoms: [
+      "Necesitas confirmar activación desde consola.",
+      "La interfaz de Configuración no es suficiente para soporte.",
+      "Quieres saber si la activación expira."
+    ],
+    causes: [
+      "Licencias por volumen pueden tener expiración.",
+      "La activación aún no terminó.",
+      "El servicio de licencias necesita mostrar estado detallado."
+    ],
+    steps: [
+      "Abre CMD como administrador.",
+      "Ejecuta slmgr /xpr.",
+      "Lee el mensaje sin cerrar la ventana.",
+      "Compara el resultado con la pantalla de Activación.",
+      "Si aparece expiración inesperada, consulta al proveedor o administrador."
+    ],
+    commands: [
+      {
+        label: "Ver expiración de licencia",
+        value: "slmgr /xpr",
+        language: "cmd",
+        explanation:
+          "Consulta si la activación es permanente o si tiene una fecha de expiración.",
+        expectedOutput:
+          "Debe aparecer un cuadro con activación permanente o fecha de expiración.",
+        ifDifferent:
+          "Si aparece Notification o error, continúa con slmgr /dlv y el solucionador de activación."
+      }
+    ],
+    warnings: [activationNotice],
+    verification: [
+      "El mensaje confirma activación permanente o expiración esperada.",
+      "La información coincide con la licencia que compraste o administra tu organización.",
+      "No aparecen errores del servicio de licencias."
+    ],
+    references: [microsoftActivation],
+    relatedSlugs: ["como-consultar-informacion-detallada-con-slmgr-dlv"]
+  }),
+  buildArticle({
+    title: "Cómo consultar información detallada con slmgr /dlv",
+    slug: "como-consultar-informacion-detallada-con-slmgr-dlv",
+    summary:
+      "Consulta canal, estado y datos de activación con slmgr /dlv sin revelar claves completas.",
+    categorySlug: "windows",
+    tags: ["windows", "slmgr", "dlv", "diagnóstico"],
+    keywords: ["slmgr dlv", "license status notification", "activation id"],
+    symptoms: [
+      "Soporte solicita estado detallado de licencia.",
+      "Aparece License Status Notification.",
+      "Necesitas distinguir canal Retail, OEM o Volume."
+    ],
+    causes: [
+      "La activación no se completó.",
+      "La clave no corresponde a la edición instalada.",
+      "El canal de licencia requiere soporte del vendedor o de TI."
+    ],
+    steps: [
+      "Abre CMD como administrador.",
+      "Ejecuta slmgr /dlv.",
+      "No compartas IDs o claves parciales en público.",
+      "Revisa License Status y Description.",
+      "Usa el código de error para buscar una solución oficial."
+    ],
+    commands: [
+      {
+        label: "Ver detalle de licencia",
+        value: "slmgr /dlv",
+        language: "cmd",
+        explanation:
+          "Muestra información detallada del servicio de licencias sin revelar una clave completa.",
+        expectedOutput:
+          "Debe aparecer una ventana con Description, License Status y datos de activación.",
+        ifDifferent:
+          "Si no abre, confirma permisos de administrador y que el servicio Software Protection esté disponible."
+      }
+    ],
+    warnings: [
+      activationNotice,
+      "No publiques capturas completas de slmgr /dlv si incluyen identificadores del dispositivo."
+    ],
+    verification: [
+      "License Status coincide con el estado que investigas.",
+      "El canal de licencia es coherente con el origen de compra.",
+      "Tienes un código o estado exacto para continuar."
+    ],
+    references: [microsoftActivation, microsoftActivationErrors],
+    relatedSlugs: ["que-significa-license-status-notification"]
+  }),
+  buildArticle({
+    title: "Error 0xC004F211 después de cambiar hardware",
+    slug: "error-0xc004f211-despues-de-cambiar-hardware",
+    summary:
+      "Explica por qué Windows reporta cambio de hardware y cómo reactivar con cuenta Microsoft o clave válida.",
+    categorySlug: "windows",
+    tags: ["0xc004f211", "windows", "activación", "hardware"],
+    keywords: ["0xc004f211", "hardware changed", "reactivar windows"],
+    symptoms: [
+      "Aparece 0xC004F211.",
+      "Windows no encuentra una licencia que coincida con el hardware.",
+      "El problema empezó tras cambiar placa base u otro componente mayor."
+    ],
+    causes: [
+      "La licencia digital quedó asociada al hardware anterior.",
+      "No se vinculó una cuenta Microsoft antes del cambio.",
+      "La licencia no permite transferencia.",
+      "La edición instalada no coincide."
+    ],
+    steps: [
+      "Confirma edición de Windows.",
+      "Conecta el equipo a Internet.",
+      "Abre Configuración > Sistema > Activación.",
+      "Ejecuta el solucionador y elige cambio de hardware reciente.",
+      "Si no funciona, contacta al vendedor, fabricante o soporte de Microsoft."
+    ],
+    warnings: [activationNotice],
+    verification: [
+      "El error 0xC004F211 desaparece.",
+      "El solucionador vincula el equipo correcto.",
+      "La licencia usada es transferible según su origen."
+    ],
+    references: [microsoftActivationErrors, microsoftHardwareReactivation],
+    relatedSlugs: ["como-reactivar-windows-despues-de-cambiar-hardware"]
+  }),
+  buildArticle({
+    title: "Error 0xC004F213: no se encontró una clave de producto",
+    slug: "error-0xc004f213-no-se-encontro-una-clave-de-producto",
+    summary:
+      "Qué hacer cuando Windows no encuentra una clave de producto en el dispositivo y no logra activarse.",
+    categorySlug: "windows",
+    tags: ["0xc004f213", "windows", "clave producto", "activación"],
+    keywords: ["0xc004f213", "no product key found", "clave producto windows"],
+    symptoms: [
+      "Windows muestra 0xC004F213.",
+      "La activación indica que no se encontró una clave.",
+      "El error aparece tras instalación limpia o cambio de hardware."
+    ],
+    causes: [
+      "La instalación no detectó clave OEM.",
+      "La licencia digital no coincide con el hardware.",
+      "No se introdujo una clave válida.",
+      "La edición instalada es distinta a la licencia."
+    ],
+    steps: [
+      "Revisa si tienes licencia digital o clave de producto.",
+      "Confirma que la edición instalada sea la correcta.",
+      "Inicia sesión con la cuenta Microsoft asociada si aplica.",
+      "Introduce una clave válida desde Cambiar clave de producto.",
+      "Si el equipo es nuevo, contacta al fabricante."
+    ],
+    warnings: [activationNotice],
+    verification: [
+      "Activación deja de mostrar 0xC004F213.",
+      "El método usado coincide con licencia digital o clave válida.",
+      "La edición instalada coincide con la licencia."
+    ],
+    references: [microsoftActivationErrors, microsoftProductKey],
+    relatedSlugs: ["como-activar-windows-con-una-clave-de-producto-valida"]
+  }),
+  buildArticle({
+    title: "Windows Home instalado con licencia de Windows Pro",
+    slug: "windows-home-instalado-con-licencia-de-windows-pro",
+    summary:
+      "Diagnostica una diferencia entre edición instalada y licencia antes de intentar activar Windows.",
+    categorySlug: "windows",
+    tags: ["windows home", "windows pro", "activación", "edición"],
+    keywords: ["windows home pro licencia", "edition mismatch", "0xc004f210"],
+    symptoms: [
+      "Tienes licencia Pro pero Windows muestra Home.",
+      "La clave válida no activa la edición instalada.",
+      "Aparecen errores de edición incompatible."
+    ],
+    causes: [
+      "Se instaló la edición incorrecta.",
+      "El instalador eligió automáticamente Home por clave OEM.",
+      "La clave corresponde a otra edición.",
+      "La licencia digital registrada no coincide."
+    ],
+    steps: [
+      "Abre Configuración > Sistema > Activación.",
+      "Confirma la edición instalada.",
+      "Compara la edición con la licencia adquirida.",
+      "Usa Cambiar clave de producto solo si la clave coincide con la edición destino.",
+      "Si no se puede cambiar, reinstala la edición correcta con medios oficiales."
+    ],
+    warnings: [
+      activationNotice,
+      "No uses claves genéricas como si fueran licencias; solo sirven para escenarios de instalación o cambio de edición documentados por Microsoft."
+    ],
+    verification: [
+      "La edición mostrada coincide con tu licencia.",
+      "La activación termina sin error de edición.",
+      "El historial de compra respalda la edición usada."
+    ],
+    references: [microsoftActivationErrors, microsoftActivation],
+    relatedSlugs: ["que-hacer-cuando-una-clave-valida-no-funciona"]
+  }),
+  buildArticle({
+    title: "Qué hacer cuando una clave válida no funciona",
+    slug: "que-hacer-cuando-una-clave-valida-no-funciona",
+    summary:
+      "Lista de comprobaciones legítimas cuando una clave de Windows comprada de forma válida no activa el equipo.",
+    categorySlug: "windows",
+    tags: ["windows", "clave producto", "licencia", "soporte"],
+    keywords: ["clave valida no funciona windows", "windows product key error"],
+    symptoms: [
+      "Windows rechaza una clave que compraste legalmente.",
+      "Aparece un error de edición, región o activación.",
+      "El vendedor confirma la compra, pero el equipo no activa."
+    ],
+    causes: [
+      "Edición instalada incorrecta.",
+      "Clave usada en más dispositivos de los permitidos.",
+      "Error temporal de conectividad.",
+      "Clave bloqueada o mal emitida por el vendedor."
+    ],
+    steps: [
+      "Verifica edición y versión de Windows.",
+      "Revisa conexión, fecha y hora.",
+      "Introduce la clave desde Configuración, no en sitios externos.",
+      "Copia el código exacto de error si falla.",
+      "Contacta al vendedor autorizado o soporte de Microsoft con comprobante de compra."
+    ],
+    warnings: [
+      activationNotice,
+      "No envíes tu clave completa por correo, chat público o capturas sin protección."
+    ],
+    verification: [
+      "La clave activa Windows o se confirma la causa oficial del rechazo.",
+      "Tienes documentación del vendedor o soporte.",
+      "No instalaste herramientas de terceros ni activadores."
+    ],
+    references: [microsoftProductKey, microsoftActivationErrors],
+    relatedSlugs: [
+      "como-activar-windows-con-una-clave-de-producto-valida",
+      "windows-home-instalado-con-licencia-de-windows-pro"
+    ]
+  }),
+  buildArticle({
+    title: "Cómo comprobar la edición instalada antes de activar Windows",
+    slug: "como-comprobar-la-edicion-instalada-antes-de-activar-windows",
+    summary:
+      "Revisa si tienes Windows Home, Pro u otra edición antes de comprar o introducir una clave.",
+    categorySlug: "windows",
+    tags: ["windows", "edición", "activación", "licencia"],
+    keywords: [
+      "comprobar edición windows",
+      "windows home pro",
+      "activation edition"
+    ],
+    symptoms: [
+      "No sabes si la clave corresponde a Home o Pro.",
+      "Una clave válida muestra error.",
+      "Soporte te pide confirmar edición instalada."
+    ],
+    causes: [
+      "La edición instalada no coincide con la licencia.",
+      "El equipo venía con una clave OEM distinta.",
+      "Se instaló Windows desde un medio genérico."
+    ],
+    steps: [
+      "Abre Configuración > Sistema > Acerca de.",
+      "Revisa Edición de Windows.",
+      "Abre Configuración > Sistema > Activación.",
+      "Compara la edición con el comprobante de compra.",
+      "No compres ni introduzcas una clave hasta confirmar compatibilidad."
+    ],
+    commands: [
+      {
+        label: "Ver edición por consola",
+        value: "DISM /Online /Get-CurrentEdition",
+        language: "cmd",
+        explanation:
+          "Consulta la edición actual instalada en la imagen de Windows en ejecución.",
+        expectedOutput:
+          "Debe mostrar Current Edition con una edición como Core o Professional.",
+        ifDifferent:
+          "Si DISM falla, usa winver y la pantalla Acerca de para confirmar edición."
+      }
+    ],
+    warnings: [activationNotice],
+    verification: [
+      "La edición queda documentada.",
+      "La clave o licencia que usarás corresponde a esa edición.",
+      "Evitas errores por Home/Pro antes de activar."
+    ],
+    references: [microsoftActivationErrors, microsoftActivation],
+    relatedSlugs: ["windows-home-instalado-con-licencia-de-windows-pro"]
+  }),
+  buildArticle({
+    title: "Cómo comprar una licencia legítima de Windows",
+    slug: "como-comprar-una-licencia-legitima-de-windows",
+    summary:
+      "Identifica canales legítimos para adquirir Windows y evita claves sospechosas, activadores o servidores no autorizados.",
+    categorySlug: "windows",
+    tags: ["windows", "licencia", "compra segura", "seguridad"],
+    keywords: [
+      "comprar licencia windows legitima",
+      "windows genuine",
+      "licencia digital"
+    ],
+    symptoms: [
+      "No tienes licencia digital ni clave válida.",
+      "Un sitio ofrece claves demasiado baratas o activadores.",
+      "Necesitas regularizar un equipo antes de usarlo."
+    ],
+    causes: [
+      "Instalación sin licencia.",
+      "Compra previa no autorizada o no transferible.",
+      "Clave bloqueada por incumplir términos.",
+      "Confusión entre clave genérica y licencia real."
+    ],
+    steps: [
+      "Confirma la edición que necesitas.",
+      "Compra en Microsoft Store, fabricante o vendedor autorizado.",
+      "Guarda comprobante y correo de confirmación.",
+      "Activa desde Configuración > Sistema > Activación.",
+      "Si hay error, usa soporte oficial con el comprobante."
+    ],
+    warnings: [
+      activationNotice,
+      "Evita activadores, cracks, KMS públicos y ejecutables que prometen activar Windows gratis."
+    ],
+    verification: [
+      "Tienes comprobante de compra.",
+      "La licencia coincide con tu edición.",
+      "Windows se activa sin herramientas de terceros."
+    ],
+    references: [microsoftActivation, microsoftProductKey],
+    relatedSlugs: ["como-activar-windows-11-con-una-licencia-digital"]
+  })
+];
+
 function buildArticle(input: {
   title: string;
   slug: string;
@@ -62,6 +828,8 @@ function buildArticle(input: {
   tags: string[];
   keywords: string[];
   difficulty?: Article["difficulty"];
+  appliesTo?: string[];
+  backupRecommendation?: string;
   commands?: CommandSnippet[];
   steps: string[];
   causes: string[];
@@ -69,9 +837,26 @@ function buildArticle(input: {
   alternatives?: string[];
   verification: string[];
   warnings?: string[];
+  revertChanges?: string[];
   references?: Reference[];
   relatedSlugs?: string[];
+  reviewer?: string;
+  changeHistory?: string[];
 }): Article {
+  const commands =
+    input.commands?.map((command) => ({
+      ...command,
+      explanation:
+        command.explanation ??
+        `Usa ${command.label} con una herramienta integrada de Windows o la aplicación correspondiente.`,
+      expectedOutput:
+        command.expectedOutput ??
+        "Debe devolver información clara o completar la operación sin mostrar un error nuevo.",
+      ifDifferent:
+        command.ifDifferent ??
+        "Si el resultado es distinto, no repitas el comando en bucle; revisa causas, permisos y alternativas."
+    })) ?? [];
+
   return {
     type: "guide",
     title: input.title,
@@ -82,6 +867,11 @@ function buildArticle(input: {
       "La idea es confirmar primero el estado real del equipo o aplicación, aplicar una corrección controlada y revisar si el problema desapareció antes de tocar opciones avanzadas.",
     technicalExplanation:
       "El diagnóstico se basa en herramientas integradas, configuración visible para el usuario y comandos de solo lectura o mantenimiento estándar. Cuando se proponen cambios, se prioriza que sean reversibles y fáciles de documentar.",
+    appliesTo: input.appliesTo ?? [
+      "Windows 10",
+      "Windows 11",
+      "Microsoft 365 o aplicaciones relacionadas cuando la guía lo indique"
+    ],
     symptoms: input.symptoms,
     causes: input.causes,
     prerequisites: [
@@ -89,23 +879,41 @@ function buildArticle(input: {
       "Tener una cuenta con permisos adecuados si la solución modifica el sistema.",
       "Anotar mensajes exactos, códigos de error o capturas si el problema continúa."
     ],
+    backupRecommendation:
+      input.backupRecommendation ??
+      "Antes de modificar configuraciones del sistema, crea un punto de restauración o confirma que tus archivos importantes estén respaldados.",
     primarySteps: input.steps,
+    solutionSteps: buildSolutionSteps({
+      categorySlug: input.categorySlug,
+      commands,
+      steps: input.steps,
+      verification: input.verification
+    }),
     alternatives: input.alternatives ?? [
       "Probar con otra cuenta de Windows para descartar perfil dañado.",
       "Revisar si una política de empresa administra la configuración.",
       "Aplicar actualizaciones pendientes antes de repetir el diagnóstico."
     ],
-    commands: input.commands ?? [],
+    commands,
     warnings: input.warnings ?? [
       "No descargues reparadores desconocidos ni ejecutes comandos encontrados en foros sin entender su efecto.",
       "Si el equipo pertenece a una organización, consulta al administrador antes de cambiar políticas o seguridad."
+    ],
+    revertChanges: input.revertChanges ?? [
+      "Si cambiaste una preferencia, vuelve a la misma pantalla y restaura el valor anterior documentado.",
+      "Si instalaste o reparaste una aplicación, revisa el historial de cambios antes de desinstalar.",
+      "Si el sistema queda inestable, usa el punto de restauración creado antes del procedimiento."
     ],
     verification: input.verification,
     faq: genericFaq,
     relatedSlugs: input.relatedSlugs ?? [],
     author: "Equipo editorial de Tesoluciona",
+    reviewer: input.reviewer ?? "Revisión técnica pendiente de laboratorio",
     publishedAt: "2026-08-04",
     updatedAt: "2026-08-04",
+    changeHistory: input.changeHistory ?? [
+      "2026-08-04: Primera versión editorial con pasos, advertencias y verificación."
+    ],
     readingTimeMinutes: Math.max(4, Math.ceil(input.steps.length * 0.8 + 3)),
     difficulty: input.difficulty ?? "basico",
     categorySlug: input.categorySlug,
@@ -121,7 +929,7 @@ function buildArticle(input: {
   };
 }
 
-export const articles: Article[] = [
+const baseArticles: Article[] = [
   buildArticle({
     title: "Cómo comprobar si Windows está activado",
     slug: "como-comprobar-si-windows-esta-activado",
@@ -1406,6 +2214,8 @@ export const articles: Article[] = [
     relatedSlugs: ["como-generar-una-contrasena-segura"]
   })
 ];
+
+export const articles: Article[] = [...baseArticles, ...activationArticles];
 
 export function getArticleBySlug(slug: string) {
   return articles.find(

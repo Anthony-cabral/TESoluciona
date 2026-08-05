@@ -8,6 +8,9 @@ export type CommandSnippet = {
   label: string;
   value: string;
   language?: "powershell" | "cmd" | "text" | "json";
+  explanation?: string;
+  expectedOutput?: string;
+  ifDifferent?: string;
 };
 
 export type Reference = {
@@ -19,6 +22,31 @@ export type Reference = {
 export type FAQ = {
   question: string;
   answer: string;
+};
+
+export type ArticleImage = {
+  id: string;
+  fileName: string;
+  src: string;
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+  sourceType: "original-screenshot" | "original-mockup" | "external";
+  creditId: string;
+};
+
+export type SolutionStep = {
+  id: string;
+  title: string;
+  objective: string;
+  instructions: string[];
+  menuPath?: string;
+  command?: CommandSnippet;
+  image?: ArticleImage;
+  expectedResult: string;
+  commonError: string;
+  howToContinue: string;
 };
 
 export type Category = {
@@ -46,19 +74,25 @@ export type Article = {
   introduction: string;
   simpleExplanation: string;
   technicalExplanation: string;
+  appliesTo: string[];
   symptoms: string[];
   causes: string[];
   prerequisites: string[];
+  backupRecommendation: string;
   primarySteps: string[];
+  solutionSteps: SolutionStep[];
   alternatives: string[];
   commands: CommandSnippet[];
   warnings: string[];
+  revertChanges: string[];
   verification: string[];
   faq: FAQ[];
   relatedSlugs: string[];
   author: string;
+  reviewer: string;
   publishedAt: string;
   updatedAt: string;
+  changeHistory: string[];
   readingTimeMinutes: number;
   difficulty: Difficulty;
   categorySlug: string;
