@@ -14,6 +14,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/categorias",
     "/herramientas",
     "/errores",
+    "/guias",
+    "/windows",
+    "/microsoft-365",
+    "/redes",
+    "/impresoras",
+    "/navegadores",
+    "/seguridad",
+    "/politica-de-privacidad",
+    "/politica-de-cookies",
+    "/creditos-de-imagenes",
     ...legalPages.map((page) => `/${page.slug}`)
   ].map((path) => ({
     url: `${siteConfig.url}${path}`,
