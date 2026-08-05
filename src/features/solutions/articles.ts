@@ -251,7 +251,7 @@ function buildSolutionSteps(input: {
             ifDifferent:
               command.ifDifferent ??
               "Si aparece un error, copia el texto exacto y revisa la sección de alternativas antes de repetirlo."
-        }
+          }
         : undefined,
       image,
       imageRequirement: imageRequirement
