@@ -125,6 +125,39 @@ describe("MVP content data", () => {
     }
   });
 
+  it("requires every solution step to have an approved image or a pending visual requirement", () => {
+    for (const article of articles) {
+      for (const step of article.solutionSteps) {
+        expect(
+          Boolean(step.image) || Boolean(step.imageRequirement),
+          `${article.slug}/${step.id} needs visual status`
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("does not reuse an approved image across different articles", () => {
+    const usageByFile = new Map<string, Set<string>>();
+
+    for (const article of articles) {
+      for (const step of article.solutionSteps) {
+        if (!step.image) continue;
+
+        const articlesUsingFile =
+          usageByFile.get(step.image.fileName) ?? new Set<string>();
+        articlesUsingFile.add(article.slug);
+        usageByFile.set(step.image.fileName, articlesUsingFile);
+      }
+    }
+
+    for (const [fileName, articleSlugs] of usageByFile) {
+      expect(
+        articleSlugs.size,
+        `${fileName} is reused across ${Array.from(articleSlugs).join(", ")}`
+      ).toBe(1);
+    }
+  });
+
   it("links all articles to existing categories", () => {
     const categorySlugs = new Set(categories.map((category) => category.slug));
 

@@ -1,5 +1,12 @@
 {
   "reviewedAt": "2026-08-05",
+  "coverageSummary": {
+    "articlesReviewed": 42,
+    "stepsReviewed": 210,
+    "approvedStepImages": 3,
+    "pendingStepImages": 207,
+    "reusedApprovedImagesAcrossArticles": 0
+  },
   "currentImages": [
     {
       "fileName": "windows-11-configuracion-sistema-activacion.svg",
@@ -34,8 +41,8 @@
   ],
   "approvedImages": [
     "windows-11-ipconfig-all-router-gateway",
-    "windows-11-ipconfig-all-dns-current",
-    "chrome-135-relaunch-update-windows-10"
+    "chrome-135-relaunch-update-windows-10",
+    "windows-10-windows-update-settings"
   ],
   "rejectedSources": [
     {
@@ -49,6 +56,14 @@
     {
       "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ipconfig.png",
       "reason": "Licencia compatible, pero resolucion baja y contenido insuficiente para explicar puerta de enlace o DNS actuales."
+    },
+    {
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ipconfig-all.png",
+      "reason": "Aprobada solo para el articulo de IP del router. Se retiro su reutilizacion en DNS porque no muestra la pantalla exacta de edicion de servidores DNS."
+    },
+    {
+      "sourceUrl": "https://support.microsoft.com/en-US/Windows/activation/activate-windows",
+      "reason": "Microsoft Support contiene instrucciones oficiales utiles como referencia, pero sus terminos no permiten copiar imagenes de Microsoft sin permiso expreso para uso comercial."
     }
   ],
   "pendingImages": [

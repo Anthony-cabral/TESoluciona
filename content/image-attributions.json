@@ -21,27 +21,6 @@
     "reviewNotes": "Pagina original revisada. Captura real de Windows 11 Professional con salida de ipconfig /all. La licencia CC0 permite uso comercial y modificaciones. La imagen publicada conserva la puerta de enlace IPv4 y oculta identificadores persistentes."
   },
   {
-    "id": "windows-11-ipconfig-all-dns-current",
-    "articleSlug": "como-cambiar-los-servidores-dns",
-    "stepNumber": 1,
-    "fileName": "windows-11-ipconfig-all-router-dns.png",
-    "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Ipconfig-all.png",
-    "directFileUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Ipconfig-all.png",
-    "author": "Europa21",
-    "copyrightHolder": "Europa21",
-    "licenseName": "Creative Commons CC0 1.0 Universal Public Domain Dedication",
-    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "attributionRequired": false,
-    "attributionText": "Europa21, CC0, via Wikimedia Commons.",
-    "commercialUseAllowed": true,
-    "modificationsAllowed": true,
-    "shareAlikeRequired": false,
-    "modificationsMade": "Descargada desde Wikimedia Commons, almacenada localmente y redactada para ocultar nombre de equipo, MAC, direcciones IPv6 e identificadores DHCPv6.",
-    "retrievedAt": "2026-08-05",
-    "reviewStatus": "approved",
-    "reviewNotes": "Misma captura aprobada usada para explicar como anotar DNS actuales antes de cambiar la configuracion. La interfaz esta en italiano y se indica en el pie de imagen."
-  },
-  {
     "id": "chrome-135-relaunch-update-windows-10",
     "articleSlug": "como-actualizar-google-chrome",
     "stepNumber": 4,
@@ -61,5 +40,26 @@
     "retrievedAt": "2026-08-05",
     "reviewStatus": "approved",
     "reviewNotes": "Pagina original revisada. Captura real de Chrome 135 en Windows 10 mostrando la accion Relaunch to update. La licencia CC BY-SA 4.0 permite uso comercial y modificaciones con atribucion y share-alike."
+  },
+  {
+    "id": "windows-10-windows-update-settings",
+    "articleSlug": "como-reparar-windows-update",
+    "stepNumber": 5,
+    "fileName": "windows-10-windows-update-settings.png",
+    "originalSourceUrl": "https://commons.wikimedia.org/wiki/File:Cc0-windows-update_dion_dresschers.png",
+    "directFileUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Cc0-windows-update_dion_dresschers.png",
+    "author": "Dion Dresschers",
+    "copyrightHolder": "Dion Dresschers",
+    "licenseName": "Creative Commons CC0 1.0 Universal Public Domain Dedication",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attributionRequired": false,
+    "attributionText": "Dion Dresschers, CC0, via Wikimedia Commons.",
+    "commercialUseAllowed": true,
+    "modificationsAllowed": true,
+    "shareAlikeRequired": false,
+    "modificationsMade": "Archivo descargado desde Wikimedia Commons y almacenado localmente sin recortes ni anotaciones.",
+    "retrievedAt": "2026-08-05",
+    "reviewStatus": "approved",
+    "reviewNotes": "Pagina original revisada. Captura real de Windows Update en Windows 10. Licencia CC0 declarada en Wikimedia Commons, uso comercial y modificaciones permitidos. No contiene credenciales ni datos personales evidentes."
   }
 ]

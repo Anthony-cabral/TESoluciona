@@ -8,6 +8,8 @@ Las guias de Tesoluciona deben usar capturas reales o recursos visuales existent
 
 Si no existe una imagen legalmente clara para un paso, el paso queda marcado como pendiente de imagen. No se sustituye con una imagen dudosa.
 
+Cada articulo debe usar imagenes propias del procedimiento que explica. Una imagen aprobada no se reutiliza en otro articulo salvo que el paso sea exactamente el mismo procedimiento, con la misma pantalla y la misma finalidad tecnica. Si la coincidencia no es exacta, se deja pendiente.
+
 ## Fuentes preferidas
 
 1. Wikimedia Commons.

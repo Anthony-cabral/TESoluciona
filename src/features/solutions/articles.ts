@@ -87,18 +87,19 @@ const approvedStepImages: StepImageMap = {
       width: 640
     }
   },
-  "como-cambiar-los-servidores-dns": {
-    1: {
-      alt: "Salida de ipconfig /all en Windows 11 mostrando servidores DNS actuales y puerta de enlace IPv4.",
+  "como-cambiar-los-servidores-dns": {},
+  "como-reparar-windows-update": {
+    5: {
+      alt: "Pantalla de Windows Update en Windows 10 mostrando el estado You're up to date y el boton Check for updates.",
       caption:
-        "Captura real de Windows 11 Professional en italiano mostrando DNS actuales antes de cambiar la configuracion. Se redactaron identificadores persistentes.",
-      creditId: "windows-11-ipconfig-all-dns-current",
-      fileName: "windows-11-ipconfig-all-router-dns.png",
-      height: 798,
-      id: "windows-11-ipconfig-all-dns-current",
+        "Captura real de Windows Update en Windows 10 donde se verifica si hay actualizaciones disponibles. Para Windows 11 la pantalla cambia visualmente, pero el procedimiento de revisar Windows Update es equivalente.",
+      creditId: "windows-10-windows-update-settings",
+      fileName: "windows-10-windows-update-settings.png",
+      height: 325,
+      id: "windows-10-windows-update-settings",
       sourceType: "external",
-      src: "/images/solutions/windows-11-ipconfig-all-router-dns.png",
-      width: 1110
+      src: "/images/solutions/windows-10-windows-update-settings.png",
+      width: 508
     }
   },
   "como-saber-la-ip-del-router": {
@@ -209,6 +210,7 @@ const pendingImageRequirements: PendingImageMap = {
 };
 
 function buildSolutionSteps(input: {
+  articleTitle: string;
   articleSlug: string;
   categorySlug: string;
   commands?: CommandSnippet[];
@@ -221,7 +223,11 @@ function buildSolutionSteps(input: {
     const image = approvedStepImages[input.articleSlug]?.[stepNumber];
     const imageRequirement = image
       ? undefined
-      : pendingImageRequirements[input.articleSlug]?.[stepNumber];
+      : (pendingImageRequirements[input.articleSlug]?.[stepNumber] ?? {
+          reason:
+            "Pendiente hasta conseguir una captura real producida en laboratorio propio o una fuente externa con licencia comercial verificable.",
+          requiredImage: `Captura real del articulo "${input.articleTitle}", paso ${stepNumber}: ${step}`
+        });
 
     return {
       id: `paso-${stepNumber}`,
@@ -900,6 +906,7 @@ function buildArticle(input: {
       "Antes de modificar configuraciones del sistema, crea un punto de restauración o confirma que tus archivos importantes estén respaldados.",
     primarySteps: input.steps,
     solutionSteps: buildSolutionSteps({
+      articleTitle: input.title,
       articleSlug: input.slug,
       categorySlug: input.categorySlug,
       commands,
