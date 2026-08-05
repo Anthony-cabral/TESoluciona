@@ -16,11 +16,13 @@ Tesoluciona es un portal web para encontrar soluciones tecnologicas, guias paso 
 
 - Home como portal de busqueda de soluciones.
 - Buscador funcional en `/buscar?q=consulta` con sugerencias, historial local, filtros y tolerancia basica a errores.
+- Rutas tematicas publicas: `/guias`, `/windows`, `/microsoft-365`, `/redes`, `/impresoras`, `/navegadores` y `/seguridad`.
 - 31 categorias publicas en `/categorias/[slug]`.
-- 30 articulos iniciales completos en `/articulos/[slug]`.
-- Centro de errores con 8 fichas iniciales en `/errores/[product]/[slug]`.
+- 42 articulos iniciales completos en `/articulos/[slug]`, incluyendo guias legitimas de activacion de Windows.
+- Centro de errores con 10 fichas iniciales en `/errores/[product]/[slug]`.
 - 10 herramientas funcionales en `/herramientas/[slug]`.
 - Panel editorial minimo protegido en `/admin`.
+- Imagenes de laboratorio, creditos publicos y flujo de revision para evitar capturas privadas.
 - Paginas legales y de confianza editables.
 - Sitemap, RSS, robots, canonical y JSON-LD por tipo de contenido.
 - CSP diferenciada para desarrollo y produccion.
@@ -76,6 +78,7 @@ El nombre publico del producto se define en `src/config/site.ts` y puede sobrees
 - `docs/DEPLOYMENT.md`
 - `docs/ENVIRONMENT.md`
 - `docs/SECURITY_CSP.md`
+- `docs/SCREENSHOT_WORKFLOW.md`
 
 ## Licencia
 

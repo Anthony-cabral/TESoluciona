@@ -27,11 +27,15 @@ Tesoluciona usa Next.js con App Router como framework central para soportar SEO,
 Prisma define los modelos editoriales y operativos del MVP:
 
 - Identidad y permisos: `User`, `Role`, `Permission`, `UserRole`, `RolePermission`.
-- Editorial: `Author`, `Article`, `ArticleRevision`, `Category`, `Tag`, `ArticleTag`.
+- Editorial: `Author`, `Reviewer`, `Article`, `ArticleRevision`, `Category`, `Tag`, `ArticleTag`, `SolutionStep`, `CommandBlock`, `ArticleImage`, `ImageLicense`.
 - Soporte: `ErrorEntry`, `ErrorSolution`, `Tool`, `FAQ`, `Source`, `RelatedContent`.
 - Actividad: `SearchQuery`, `SearchSuggestion`, `Comment`, `Rating`, `Favorite`, `ReadingHistory`, `NewsletterSubscription`, `Redirect`, `AuditLog`.
 
-El contenido inicial vive en `src/features/solutions/*` y se puede cargar a PostgreSQL con `npm run prisma:seed`. La configuracion de conexion vive en `prisma.config.ts`, compatible con Prisma 7.
+El contenido inicial vive en `src/features/solutions/*` y se puede cargar a PostgreSQL con `npm run prisma:seed`. La configuracion de conexion vive en `prisma.config.ts`, compatible con Prisma 7. Los creditos de imagenes se registran en `content/image-attributions.json` y el flujo editorial esta documentado en `docs/SCREENSHOT_WORKFLOW.md`.
+
+## Portal publico
+
+La navegacion publica evita rutas privadas o no implementadas. El admin queda protegido en `/admin` y fuera del sitemap, robots e interfaz publica. Las rutas tematicas (`/guias`, `/windows`, `/microsoft-365`, `/redes`, `/impresoras`, `/navegadores`, `/seguridad`) agregan contenido por necesidad del usuario sin duplicar contenido de baja calidad.
 
 ## Cache
 
