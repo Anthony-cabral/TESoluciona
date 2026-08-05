@@ -31,6 +31,22 @@ describe("solution search", () => {
     ).toBe(true);
   });
 
+  it("finds guide content by commands and step explanations", () => {
+    const search = searchContent("slmgr xpr activacion permanente");
+
+    expect(
+      search.results.some((result) =>
+        result.url.includes("como-consultar-el-estado-con-slmgr-xpr")
+      )
+    ).toBe(true);
+  });
+
+  it("finds activation errors from legitimate support content", () => {
+    const search = searchContent("0xC004F213 clave producto");
+
+    expect(search.results[0]?.url).toBe("/errores/windows/0xc004f213");
+  });
+
   it("filters by type and category", () => {
     const search = searchContent("JSON", {
       categorySlug: "sql",

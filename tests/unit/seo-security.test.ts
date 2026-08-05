@@ -21,8 +21,10 @@ describe("SEO and security", () => {
     expect(dev).toContain("script-src");
     expect(dev).toContain("'unsafe-eval'");
     expect(dev).not.toMatch(/default-src[^;]*unsafe-eval/);
+    expect(dev).not.toContain("upgrade-insecure-requests");
     expect(prod).not.toContain("'unsafe-eval'");
     expect(prod).toContain("'nonce-nonce-prod'");
+    expect(prod).not.toContain("style-src 'self' 'unsafe-inline'");
   });
 
   it("blocks non-indexable areas in robots", () => {
@@ -38,6 +40,9 @@ describe("SEO and security", () => {
     const urls = sitemap().map((entry) => entry.url);
 
     expect(urls).toContain(`${siteConfig.url}/categorias/windows`);
+    expect(urls).toContain(`${siteConfig.url}/windows`);
+    expect(urls).toContain(`${siteConfig.url}/guias`);
+    expect(urls).toContain(`${siteConfig.url}/creditos-de-imagenes`);
     expect(urls).toContain(
       `${siteConfig.url}/articulos/como-comprobar-si-windows-esta-activado`
     );
