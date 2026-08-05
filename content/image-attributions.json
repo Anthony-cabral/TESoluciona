@@ -1,0 +1,80 @@
+[
+  {
+    "id": "windows-11-configuracion-sistema-activacion",
+    "articleSlug": "como-comprobar-si-windows-esta-activado",
+    "fileName": "windows-11-configuracion-sistema-activacion.svg",
+    "sourceUrl": "internal://tesoluciona/lab/windows-activation",
+    "author": "Equipo Tesoluciona",
+    "license": "Tesoluciona original asset",
+    "licenseUrl": "",
+    "attributionText": "Mockup original creado por Tesoluciona en entorno de laboratorio.",
+    "retrievedAt": "2026-08-04",
+    "commercialUseAllowed": true,
+    "modificationsAllowed": true
+  },
+  {
+    "id": "windows-terminal-comando-administrador",
+    "articleSlug": "como-ejecutar-sfc-y-dism-correctamente",
+    "fileName": "windows-terminal-comando-administrador.svg",
+    "sourceUrl": "internal://tesoluciona/lab/windows-terminal",
+    "author": "Equipo Tesoluciona",
+    "license": "Tesoluciona original asset",
+    "licenseUrl": "",
+    "attributionText": "Mockup original creado por Tesoluciona en entorno de laboratorio.",
+    "retrievedAt": "2026-08-04",
+    "commercialUseAllowed": true,
+    "modificationsAllowed": true
+  },
+  {
+    "id": "outlook-panel-perfiles-laboratorio",
+    "articleSlug": "como-crear-un-perfil-nuevo-de-outlook",
+    "fileName": "outlook-panel-perfiles-laboratorio.svg",
+    "sourceUrl": "internal://tesoluciona/lab/outlook-profiles",
+    "author": "Equipo Tesoluciona",
+    "license": "Tesoluciona original asset",
+    "licenseUrl": "",
+    "attributionText": "Mockup original creado por Tesoluciona en entorno de laboratorio.",
+    "retrievedAt": "2026-08-04",
+    "commercialUseAllowed": true,
+    "modificationsAllowed": true
+  },
+  {
+    "id": "cmd-ipconfig-gateway-laboratorio",
+    "articleSlug": "como-saber-la-ip-del-router",
+    "fileName": "cmd-ipconfig-gateway-laboratorio.svg",
+    "sourceUrl": "internal://tesoluciona/lab/network-cli",
+    "author": "Equipo Tesoluciona",
+    "license": "Tesoluciona original asset",
+    "licenseUrl": "",
+    "attributionText": "Mockup original creado por Tesoluciona en entorno de laboratorio.",
+    "retrievedAt": "2026-08-04",
+    "commercialUseAllowed": true,
+    "modificationsAllowed": true
+  },
+  {
+    "id": "impresora-preferencias-duplex-laboratorio",
+    "articleSlug": "como-habilitar-la-impresion-a-doble-cara-por-defecto",
+    "fileName": "impresora-preferencias-duplex-laboratorio.svg",
+    "sourceUrl": "internal://tesoluciona/lab/printer-duplex",
+    "author": "Equipo Tesoluciona",
+    "license": "Tesoluciona original asset",
+    "licenseUrl": "",
+    "attributionText": "Mockup original creado por Tesoluciona en entorno de laboratorio.",
+    "retrievedAt": "2026-08-04",
+    "commercialUseAllowed": true,
+    "modificationsAllowed": true
+  },
+  {
+    "id": "navegador-configuracion-seguridad-laboratorio",
+    "articleSlug": "como-comprobar-si-una-conexion-usa-https",
+    "fileName": "navegador-configuracion-seguridad-laboratorio.svg",
+    "sourceUrl": "internal://tesoluciona/lab/browser-security",
+    "author": "Equipo Tesoluciona",
+    "license": "Tesoluciona original asset",
+    "licenseUrl": "",
+    "attributionText": "Mockup original creado por Tesoluciona en entorno de laboratorio.",
+    "retrievedAt": "2026-08-04",
+    "commercialUseAllowed": true,
+    "modificationsAllowed": true
+  }
+]

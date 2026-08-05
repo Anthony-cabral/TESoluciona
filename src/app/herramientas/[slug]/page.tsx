@@ -69,7 +69,18 @@ export default async function ToolPage({ params }: ToolPageProps) {
         </div>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem]">
-          <ToolRunner slug={tool.slug} />
+          <div className="grid gap-5">
+            <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-sm leading-6 text-emerald-950 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-100">
+              <h2 className="font-semibold">Privacidad de la herramienta</h2>
+              <p className="mt-2">
+                Esta herramienta procesa los datos localmente en tu navegador
+                cuando es posible. No pegues contraseñas reales, tokens, claves
+                privadas, JWT, datos personales o información confidencial de
+                empresa.
+              </p>
+            </section>
+            <ToolRunner slug={tool.slug} />
+          </div>
           <aside className="grid gap-6 lg:self-start">
             <section className="rounded-lg border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-900">
               <h2 className="font-semibold text-slate-950 dark:text-white">

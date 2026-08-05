@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Outlook profiles mockup</title>
+  <desc id="desc">Original Tesoluciona lab mockup of an Outlook profiles dialog with a new profile action highlighted.</desc>
+  <rect width="1280" height="720" fill="#eff6ff"/>
+  <rect x="170" y="84" width="940" height="552" rx="14" fill="#ffffff" stroke="#bfdbfe"/>
+  <text x="220" y="150" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#1e3a8a">Correo - Perfiles de Outlook</text>
+  <rect x="220" y="196" width="620" height="280" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="250" y="248" font-family="Arial, sans-serif" font-size="22" fill="#0f172a">Perfil actual</text>
+  <rect x="250" y="280" width="520" height="52" rx="8" fill="#e0f2fe"/>
+  <text x="276" y="313" font-family="Arial, sans-serif" font-size="20" fill="#075985">Outlook-laboratorio</text>
+  <rect x="250" y="356" width="520" height="52" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="276" y="389" font-family="Arial, sans-serif" font-size="20" fill="#334155">Perfil-prueba</text>
+  <rect x="874" y="216" width="170" height="48" rx="8" fill="#0f766e"/>
+  <text x="922" y="247" font-family="Arial, sans-serif" font-size="18" fill="#ffffff">Agregar</text>
+  <rect x="874" y="288" width="170" height="48" rx="8" fill="#e2e8f0"/>
+  <text x="920" y="319" font-family="Arial, sans-serif" font-size="18" fill="#334155">Quitar</text>
+  <path d="M780 240 L870 240" stroke="#f97316" stroke-width="12" stroke-linecap="round"/>
+  <path d="M870 240 L840 220 L840 260 Z" fill="#f97316"/>
+  <text x="220" y="548" font-family="Arial, sans-serif" font-size="20" fill="#475569">Usa datos ficticios y no elimines perfiles antiguos hasta verificar sincronizacion.</text>
+</svg>
