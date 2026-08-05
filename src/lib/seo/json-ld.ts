@@ -27,6 +27,8 @@ export function breadcrumbJsonLd(items: { label: string; href: string }[]) {
 }
 
 export function articleJsonLd(article: Article) {
+  const image = article.solutionSteps.find((step) => step.image)?.image;
+
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -42,6 +44,7 @@ export function articleJsonLd(article: Article) {
       "@type": "Organization",
       name: siteConfig.name
     },
+    ...(image ? { image: [`${siteConfig.url}${image.src}`] } : {}),
     mainEntityOfPage: `${siteConfig.url}${article.seo.canonicalPath}`
   };
 }

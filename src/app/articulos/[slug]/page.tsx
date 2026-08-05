@@ -9,6 +9,7 @@ import { FAQList } from "@/components/content/faq-list";
 import { StepImage } from "@/components/content/step-image";
 import { Container } from "@/components/layout/container";
 import { JsonLd } from "@/components/seo/json-ld";
+import { siteConfig } from "@/config/site";
 import { articles, getArticleBySlug } from "@/features/solutions/articles";
 import { getCategoryBySlug } from "@/features/solutions/categories";
 import type {
@@ -32,6 +33,16 @@ export async function generateMetadata({
   const article = getArticleBySlug(slug);
   if (!article) return {};
 
+  const socialImage = article.solutionSteps.find((step) => step.image)?.image;
+  const socialImageMetadata = socialImage
+    ? {
+        alt: socialImage.alt,
+        height: socialImage.height,
+        url: `${siteConfig.url}${socialImage.src}`,
+        width: socialImage.width
+      }
+    : undefined;
+
   return {
     title: article.seo.title,
     description: article.seo.description,
@@ -43,7 +54,18 @@ export async function generateMetadata({
       description: article.seo.description,
       type: "article",
       publishedTime: article.publishedAt,
-      modifiedTime: article.updatedAt
+      modifiedTime: article.updatedAt,
+      ...(socialImageMetadata
+        ? {
+            images: [socialImageMetadata]
+          }
+        : {})
+    },
+    twitter: {
+      card: socialImageMetadata ? "summary_large_image" : "summary",
+      description: article.seo.description,
+      images: socialImageMetadata ? [socialImageMetadata.url] : undefined,
+      title: article.seo.title
     }
   };
 }
