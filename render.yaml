@@ -4,7 +4,7 @@ services:
     runtime: node
     branch: feature/public-solutions-mvp
     plan: free
-    buildCommand: npm ci && npm run prisma:generate && npm run build
+    buildCommand: npm ci --include=dev && npm run prisma:generate && npm run build
     startCommand: npm run start -- --hostname 0.0.0.0 --port $PORT
     healthCheckPath: /api/health
     autoDeploy: false

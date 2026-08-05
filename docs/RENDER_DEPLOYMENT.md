@@ -6,7 +6,7 @@ Use this document to create a temporary Render Web Service from the branch `feat
 
 - Runtime: Node
 - Branch: `feature/public-solutions-mvp`
-- Build Command: `npm ci && npm run prisma:generate && npm run build`
+- Build Command: `npm ci --include=dev && npm run prisma:generate && npm run build`
 - Start Command: `npm run start -- --hostname 0.0.0.0 --port $PORT`
 - Health Check Path: `/api/health`
 - Auto Deploy: disabled for temporary review
@@ -32,3 +32,7 @@ Private values must be configured manually in Render and must not be committed:
 The public pages, search, articles, errors and tools use static content in this phase, so the preview can run without PostgreSQL or Redis. `/api/health` returns HTTP 200 and reports `missing_env` for database/cache when those variables are absent.
 
 When persistent editorial data is needed, create a Render PostgreSQL database and set `DATABASE_URL` from Render's internal connection string. Do not write that value into Git.
+
+## Build dependencies
+
+Render sets `NODE_ENV=production` for the deployed service. The build command intentionally uses `npm ci --include=dev` so build-time packages such as Tailwind CSS, PostCSS, Autoprefixer, Prisma CLI, TypeScript and ESLint are available during `next build`. Runtime still runs with `NODE_ENV=production`.
