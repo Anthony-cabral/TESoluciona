@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+.git
+.next
+node_modules
+coverage
+*.log
+*.local
+tsconfig.tsbuildinfo
+prisma/dev.db
+prisma/dev.db-journal

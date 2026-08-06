@@ -1,16 +1,31 @@
 # Tesoluciona
 
-Tesoluciona es una plataforma web de soluciones tecnológicas creada con Next.js, TypeScript, Tailwind CSS, PostgreSQL, Prisma y Redis. Esta fase inicial deja una base funcional, modular y preparada para crecer por módulos sin construir todavía comunidad, IA, panel administrativo completo, AdSense real ni herramientas online completas.
+Tesoluciona es un portal web para encontrar soluciones tecnologicas, guias paso a paso, codigos de error y herramientas practicas para soporte de Windows, Microsoft 365, redes, navegadores, dispositivos y seguridad.
 
 ## Stack
 
-- Next.js con App Router, SSR e ISR.
+- Next.js con App Router, SSR, ISR y metadata dinamica.
 - React y TypeScript estricto.
 - Tailwind CSS para el sistema base de estilos.
 - Route Handlers de Next.js para API REST modular.
 - PostgreSQL con Prisma ORM.
-- Redis preparado para caché.
-- Docker, Nginx, Vercel y guía para Cloudflare/VPS.
+- Redis preparado para cache.
+- Docker, Nginx, Vercel y guia para Cloudflare/VPS.
+
+## MVP actual
+
+- Home como portal de busqueda de soluciones.
+- Buscador funcional en `/buscar?q=consulta` con sugerencias, historial local, filtros y tolerancia basica a errores.
+- Rutas tematicas publicas: `/guias`, `/windows`, `/microsoft-365`, `/redes`, `/impresoras`, `/navegadores` y `/seguridad`.
+- 31 categorias publicas en `/categorias/[slug]`.
+- 42 articulos iniciales completos en `/articulos/[slug]`, incluyendo guias legitimas de activacion de Windows.
+- Centro de errores con 10 fichas iniciales en `/errores/[product]/[slug]`.
+- 10 herramientas funcionales en `/herramientas/[slug]`.
+- Panel editorial minimo protegido en `/admin`.
+- Imagenes de laboratorio, creditos publicos y flujo de revision para evitar capturas privadas.
+- Paginas legales y de confianza editables.
+- Sitemap, RSS, robots, canonical y JSON-LD por tipo de contenido.
+- CSP diferenciada para desarrollo y produccion.
 
 ## Requisitos locales
 
@@ -18,12 +33,14 @@ Tesoluciona es una plataforma web de soluciones tecnológicas creada con Next.js
 - npm 10 o superior.
 - Docker Desktop, si quieres levantar PostgreSQL, Redis y Nginx localmente.
 
-## Configuración
+## Configuracion
 
 1. Copia `.env.example` a `.env`.
 2. Ajusta `DATABASE_URL`, `REDIS_URL`, `NEXT_PUBLIC_SITE_NAME` y `NEXT_PUBLIC_SITE_URL`.
 3. Instala dependencias con `npm ci`.
 4. Genera Prisma Client con `npm run prisma:generate`.
+5. Ejecuta migraciones con `npm run prisma:migrate`.
+6. Carga datos iniciales con `npm run prisma:seed`.
 
 ## Comandos
 
@@ -34,6 +51,8 @@ npm run lint
 npm run typecheck
 npm run test
 npm run build
+npm run prisma:validate
+npm run prisma:seed
 ```
 
 ## Docker
@@ -42,19 +61,25 @@ npm run build
 docker compose up --build
 ```
 
-La aplicación queda disponible detrás de Nginx en `http://localhost:8080`.
+La aplicacion queda disponible detras de Nginx en `http://localhost:8080`.
 
-## Configuración central del nombre
+## Configuracion central del nombre
 
-El nombre público del producto se define en `src/config/site.ts` y puede sobreescribirse con `NEXT_PUBLIC_SITE_NAME`.
+El nombre publico del producto se define en `src/config/site.ts` y puede sobreescribirse con `NEXT_PUBLIC_SITE_NAME`.
 
-## Documentación
+## Administracion local
+
+`/admin` esta protegido por Basic Auth. En desarrollo usa los valores de `.env.example`; en produccion debes definir `ADMIN_USERNAME` y `ADMIN_PASSWORD` con valores propios antes de desplegar.
+
+## Documentacion
 
 - `docs/ARCHITECTURE.md`
 - `docs/GIT_WORKFLOW.md`
 - `docs/DEPLOYMENT.md`
 - `docs/ENVIRONMENT.md`
+- `docs/SECURITY_CSP.md`
+- `docs/SCREENSHOT_WORKFLOW.md`
 
 ## Licencia
 
-No se incluye una licencia hasta que el propietario del proyecto indique cuál debe aplicarse.
+No se incluye una licencia hasta que el propietario del proyecto indique cual debe aplicarse.

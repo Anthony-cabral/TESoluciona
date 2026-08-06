@@ -2,16 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/layout/container";
+import { SearchBox } from "@/components/search/search-box";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { siteConfig } from "@/config/site";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[color:var(--border)] bg-[color:var(--surface)]/95 backdrop-blur">
-      <Container className="flex min-h-16 items-center justify-between gap-6 py-3">
+    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
+      <Container className="grid min-h-16 gap-3 py-3 lg:grid-cols-[auto_1fr_auto] lg:items-center">
         <Link
+          aria-label={siteConfig.name}
           className="flex items-center gap-3"
           href="/"
-          aria-label={siteConfig.name}
         >
           <Image
             alt=""
@@ -21,17 +23,41 @@ export function SiteHeader() {
             src="/brand/tesoluciona-mark.svg"
             width="36"
           />
-          <span className="text-lg font-bold text-ink-950 dark:text-white">
+          <span className="text-lg font-bold text-slate-950 dark:text-white">
             {siteConfig.name}
           </span>
         </Link>
-        <nav aria-label="Navegación principal">
-          <ul className="hidden items-center gap-5 text-sm font-medium text-ink-700 dark:text-slate-200 md:flex">
+
+        <SearchBox className="order-3 lg:order-none" id="header-search" />
+
+        <div className="flex items-center justify-between gap-3 lg:justify-end">
+          <nav aria-label="Navegación principal">
+            <ul className="hidden items-center gap-4 text-sm font-semibold text-slate-700 dark:text-slate-200 xl:flex">
+              {siteConfig.mainNavigation.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    className="hover:text-brand-700 dark:hover:text-brand-300"
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <ThemeToggle />
+        </div>
+
+        <nav aria-label="Navegación móvil" className="xl:hidden">
+          <ul className="flex gap-3 overflow-x-auto pb-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
             {siteConfig.mainNavigation.map((item) => (
-              <li key={item.href}>
-                <a className="hover:text-brand-700" href={item.href}>
+              <li className="shrink-0" key={item.href}>
+                <Link
+                  className="hover:text-brand-700 dark:hover:text-brand-300"
+                  href={item.href}
+                >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

@@ -1,0 +1,111 @@
+{
+  "reviewedAt": "2026-08-05",
+  "coverageSummary": {
+    "articlesReviewed": 42,
+    "stepsReviewed": 210,
+    "approvedStepImages": 3,
+    "pendingStepImages": 207,
+    "reusedApprovedImagesAcrossArticles": 0
+  },
+  "currentImages": [
+    {
+      "fileName": "windows-11-configuracion-sistema-activacion.svg",
+      "classification": "eliminar",
+      "reason": "Mockup generico de interfaz de Windows. No debe representar una pantalla real de activacion."
+    },
+    {
+      "fileName": "windows-terminal-comando-administrador.svg",
+      "classification": "eliminar",
+      "reason": "Mockup generico de terminal. No demuestra la salida real de SFC o DISM."
+    },
+    {
+      "fileName": "outlook-panel-perfiles-laboratorio.svg",
+      "classification": "eliminar",
+      "reason": "Mockup generico de Outlook. No corresponde a una captura real del panel de perfiles o reparacion."
+    },
+    {
+      "fileName": "cmd-ipconfig-gateway-laboratorio.svg",
+      "classification": "sustituir",
+      "reason": "Mockup sustituido progresivamente por una captura real de ipconfig /all con licencia CC0 y datos sensibles redactados."
+    },
+    {
+      "fileName": "impresora-preferencias-duplex-laboratorio.svg",
+      "classification": "eliminar",
+      "reason": "Mockup generico de impresora. Falta captura real de preferencias duplex con licencia compatible."
+    },
+    {
+      "fileName": "navegador-configuracion-seguridad-laboratorio.svg",
+      "classification": "eliminar",
+      "reason": "Mockup generico de navegador. No debe representar Chrome, Edge o HTTPS real."
+    }
+  ],
+  "approvedImages": [
+    "windows-11-ipconfig-all-router-gateway",
+    "chrome-135-relaunch-update-windows-10",
+    "windows-10-windows-update-settings"
+  ],
+  "rejectedSources": [
+    {
+      "sourceUrl": "https://learn.microsoft.com/en-us/legal/termsofuse",
+      "reason": "Los terminos de Microsoft Learn no autorizan copiar imagenes, logos o graficos salvo permiso expreso. No se usan capturas desde esa documentacion como imagenes publicas."
+    },
+    {
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Microsoft_Edge_Tools_and_Settings.png",
+      "reason": "Licencia CC0 verificada, pero la captura muestra configuracion de fuentes y una extension de Edge, no el flujo de actualizacion requerido."
+    },
+    {
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ipconfig.png",
+      "reason": "Licencia compatible, pero resolucion baja y contenido insuficiente para explicar puerta de enlace o DNS actuales."
+    },
+    {
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ipconfig-all.png",
+      "reason": "Aprobada solo para el articulo de IP del router. Se retiro su reutilizacion en DNS porque no muestra la pantalla exacta de edicion de servidores DNS."
+    },
+    {
+      "sourceUrl": "https://support.microsoft.com/en-US/Windows/activation/activate-windows",
+      "reason": "Microsoft Support contiene instrucciones oficiales utiles como referencia, pero sus terminos no permiten copiar imagenes de Microsoft sin permiso expreso para uso comercial."
+    }
+  ],
+  "pendingImages": [
+    {
+      "articleSlug": "como-comprobar-si-windows-esta-activado",
+      "neededImage": "Captura real de Windows 11 en Configuracion > Sistema > Activacion mostrando estado de licencia sin datos personales."
+    },
+    {
+      "articleSlug": "como-activar-windows-11-con-una-licencia-digital",
+      "neededImage": "Captura real del flujo oficial de activacion digital en Windows 11."
+    },
+    {
+      "articleSlug": "como-usar-el-solucionador-de-activacion",
+      "neededImage": "Captura real del solucionador de activacion de Windows 11."
+    },
+    {
+      "articleSlug": "como-ejecutar-sfc-y-dism-correctamente",
+      "neededImage": "Captura real de Terminal o CMD como administrador mostrando SFC y DISM sin rutas ni datos privados."
+    },
+    {
+      "articleSlug": "como-reparar-windows-update",
+      "neededImage": "Captura real de Windows Update o solucionador de problemas en Windows 11."
+    },
+    {
+      "articleSlug": "outlook-no-abre-causas-y-soluciones",
+      "neededImage": "Captura real del modo seguro, panel de perfiles o error de inicio de Outlook sin cuentas visibles."
+    },
+    {
+      "articleSlug": "como-reparar-microsoft-office",
+      "neededImage": "Captura real del flujo de reparar Microsoft 365 desde Aplicaciones instaladas."
+    },
+    {
+      "articleSlug": "como-habilitar-la-impresion-a-doble-cara-por-defecto",
+      "neededImage": "Captura real de preferencias de impresora con impresion duplex por defecto."
+    },
+    {
+      "articleSlug": "como-cambiar-los-servidores-dns",
+      "neededImage": "Captura real de Windows 11 en Red e Internet > DNS para editar servidores."
+    },
+    {
+      "articleSlug": "como-actualizar-microsoft-edge",
+      "neededImage": "Captura real de Acerca de Microsoft Edge mostrando comprobacion de actualizaciones."
+    }
+  ]
+}

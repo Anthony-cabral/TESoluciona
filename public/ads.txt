@@ -1,0 +1,4 @@
+# Tesoluciona ads.txt template
+# Do not publish a real publisher ID until an advertising account is approved.
+# Example format:
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
