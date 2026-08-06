@@ -24,6 +24,39 @@ export type FAQ = {
   answer: string;
 };
 
+export type ToolProcessingMode = "local" | "server" | "hybrid" | "provider";
+
+export type ToolBatch = "mvp" | "batch-1" | "batch-2" | "batch-3" | "roadmap";
+
+export type FileToolOperation =
+  | "images-to-pdf"
+  | "jpg-to-pdf"
+  | "merge-pdf"
+  | "split-pdf"
+  | "compress-pdf"
+  | "pdf-to-jpg"
+  | "jpg-to-png"
+  | "png-to-jpg"
+  | "resize-image"
+  | "compress-image";
+
+export type ToolPrivacy = {
+  processingMode: ToolProcessingMode;
+  localOnly: boolean;
+  uploadsFiles: boolean;
+  retention: string;
+  usesAi: boolean;
+  usesThirdParties: boolean;
+  thirdPartyDetails?: string;
+};
+
+export type ToolLimits = {
+  maxFiles: number;
+  maxFileSizeMb: number;
+  acceptedFormats: string[];
+  outputFormats: string[];
+};
+
 export type ArticleImage = {
   id: string;
   fileName: string;
@@ -152,10 +185,19 @@ export type ToolMetadata = {
   slug: string;
   categorySlug: string;
   description: string;
+  summary?: string;
   useCases: string[];
+  instructions?: string[];
   examples: string[];
   faq: FAQ[];
   tags: string[];
+  batch?: ToolBatch;
+  operation?: FileToolOperation;
+  popular?: boolean;
+  recent?: boolean;
+  relatedSlugs?: string[];
+  limits?: ToolLimits;
+  privacy?: ToolPrivacy;
   seo: {
     title: string;
     description: string;

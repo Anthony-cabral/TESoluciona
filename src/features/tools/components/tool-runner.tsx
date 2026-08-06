@@ -1,10 +1,25 @@
 "use client";
 
 import QRCode from "qrcode";
-import { Copy, RefreshCcw } from "lucide-react";
+import { Copy, Download, RefreshCcw } from "lucide-react";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import { getToolBySlug } from "@/features/solutions/tools";
+import type { FileToolOperation } from "@/features/solutions/types";
+import {
+  downloadUrl,
+  formatBytes,
+  revokeObjectUrls,
+  validateBrowserFiles,
+  type GeneratedFile
+} from "@/features/tools/lib/browser-file-processing";
+import type { FileKind } from "@/features/tools/lib/file-validation";
+import {
+  compressImages,
+  convertImages,
+  resizeImages
+} from "@/features/tools/lib/image-processing";
 import {
   calculateIPv4,
   calculateSubnetForHosts
@@ -13,6 +28,13 @@ import {
   evaluatePasswordStrength,
   generatePassword
 } from "@/features/tools/lib/password";
+import {
+  compressPdfFile,
+  imagesToPdf,
+  mergePdfFiles,
+  pdfToJpg,
+  splitPdfFile
+} from "@/features/tools/lib/pdf-processing";
 import {
   countText,
   decodeBase64,
@@ -25,6 +47,12 @@ type ToolRunnerProps = {
 };
 
 export function ToolRunner({ slug }: ToolRunnerProps) {
+  const metadata = getToolBySlug(slug);
+
+  if (metadata?.operation) {
+    return <FileTool operation={metadata.operation} slug={slug} />;
+  }
+
   if (slug === "calculadora-ipv4") return <IPv4Tool />;
   if (slug === "calculadora-subred") return <SubnetTool />;
   if (slug === "generador-uuid") return <UuidTool />;
@@ -69,6 +97,363 @@ function ToolShell({
       </button>
     </div>
   );
+}
+
+function FileTool({
+  operation,
+  slug
+}: {
+  operation: FileToolOperation;
+  slug: string;
+}) {
+  const metadata = getToolBySlug(slug);
+  const [files, setFiles] = useState<File[]>([]);
+  const [results, setResults] = useState<GeneratedFile[]>([]);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [quality, setQuality] = useState("82");
+  const [width, setWidth] = useState("");
+  const [height, setHeight] = useState("");
+  const objectUrls = useRef<string[]>([]);
+  const limits = metadata?.limits ?? {
+    acceptedFormats: ["PDF"],
+    maxFileSizeMb: 25,
+    maxFiles: 1,
+    outputFormats: ["PDF"]
+  };
+  const acceptedKinds = getAcceptedKinds(operation);
+
+  useEffect(() => {
+    return () => revokeObjectUrls(objectUrls.current);
+  }, []);
+
+  function clear() {
+    revokeObjectUrls(objectUrls.current);
+    objectUrls.current = [];
+    setFiles([]);
+    setResults([]);
+    setError("");
+    setBusy(false);
+    setProgress(0);
+    setQuality("82");
+    setWidth("");
+    setHeight("");
+  }
+
+  async function run() {
+    try {
+      setBusy(true);
+      setError("");
+      setProgress(5);
+      revokeObjectUrls(objectUrls.current);
+      objectUrls.current = [];
+      setResults([]);
+
+      await validateBrowserFiles({
+        acceptedKinds,
+        files,
+        maxFileSizeMb: limits.maxFileSizeMb,
+        maxFiles: limits.maxFiles
+      });
+
+      if (operation === "merge-pdf" && files.length < 2) {
+        throw new Error("Selecciona al menos dos PDF para unir.");
+      }
+
+      const generated = await processFiles({
+        files,
+        height: Number.parseInt(height, 10),
+        objectUrls: objectUrls.current,
+        onProgress: setProgress,
+        operation,
+        quality: Math.min(95, Math.max(45, Number.parseInt(quality, 10))) / 100,
+        width: Number.parseInt(width, 10)
+      });
+
+      setResults(generated);
+      setProgress(100);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No se pudo procesar.");
+      setProgress(0);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const showQuality =
+    operation === "png-to-jpg" || operation === "compress-image";
+  const showSize = operation === "resize-image";
+
+  return (
+    <ToolShell
+      error={error}
+      onClear={clear}
+      result={results.length ? <FileResultList files={results} /> : undefined}
+    >
+      <label className="block text-sm font-semibold text-slate-800 dark:text-slate-100">
+        Archivos
+        <input
+          accept={getAcceptValue(acceptedKinds)}
+          className="mt-2 block w-full rounded-md border border-dashed border-slate-300 bg-white px-3 py-3 text-sm text-slate-800 file:mr-4 file:rounded-md file:border-0 file:bg-brand-700 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:border-brand-500 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
+          multiple={limits.maxFiles > 1}
+          onChange={(event) => {
+            setFiles(Array.from(event.target.files ?? []));
+            setResults([]);
+            setError("");
+            setProgress(0);
+          }}
+          type="file"
+        />
+      </label>
+
+      <div className="rounded-md bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-700 dark:bg-slate-950 dark:text-slate-200">
+        <p>
+          Formatos: {limits.acceptedFormats.join(", ")}. Salida:{" "}
+          {limits.outputFormats.join(", ")}.
+        </p>
+        <p>
+          Limite: {limits.maxFiles} archivo
+          {limits.maxFiles === 1 ? "" : "s"} de hasta {limits.maxFileSizeMb} MB
+          cada uno.
+        </p>
+        {files.length ? (
+          <p>
+            Seleccionados:{" "}
+            {files
+              .map((file) => `${file.name} (${formatBytes(file.size)})`)
+              .join(", ")}
+          </p>
+        ) : null}
+      </div>
+
+      {showSize ? (
+        <div className="grid gap-3 sm:grid-cols-2">
+          <TextInput
+            label="Ancho en pixeles"
+            onChange={setWidth}
+            placeholder="1200"
+            value={width}
+          />
+          <TextInput
+            label="Alto en pixeles"
+            onChange={setHeight}
+            placeholder="800"
+            value={height}
+          />
+        </div>
+      ) : null}
+
+      {showQuality ? (
+        <TextInput
+          label="Calidad JPG (45 a 95)"
+          onChange={setQuality}
+          placeholder="82"
+          value={quality}
+        />
+      ) : null}
+
+      {busy || progress > 0 ? (
+        <div aria-live="polite">
+          <div className="h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+            <div
+              className="h-full bg-brand-700 transition-all"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <p className="mt-2 text-sm text-slate-700 dark:text-slate-200">
+            {busy ? `Procesando ${progress}%` : "Procesamiento completado"}
+          </p>
+        </div>
+      ) : null}
+
+      <PrimaryButton disabled={busy} onClick={run}>
+        {busy ? "Procesando..." : getActionLabel(operation)}
+      </PrimaryButton>
+    </ToolShell>
+  );
+}
+
+function FileResultList({ files }: { files: GeneratedFile[] }) {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-950">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm font-semibold text-slate-950 dark:text-white">
+          Archivos generados
+        </p>
+        {files.length > 1 ? (
+          <button
+            className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-800 hover:border-brand-600 dark:border-slate-600 dark:text-slate-100"
+            onClick={() => {
+              for (const file of files) {
+                downloadUrl(file.url, file.fileName);
+              }
+            }}
+            type="button"
+          >
+            <Download aria-hidden="true" className="h-3.5 w-3.5" />
+            Descargar todo
+          </button>
+        ) : null}
+      </div>
+      <ul className="mt-3 grid gap-2">
+        {files.map((file) => (
+          <li
+            className="flex flex-wrap items-center justify-between gap-3 rounded-md bg-white px-3 py-2 text-sm text-slate-800 dark:bg-slate-900 dark:text-slate-100"
+            key={`${file.fileName}-${file.url}`}
+          >
+            <span>
+              {file.fileName} · {formatBytes(file.size)}
+            </span>
+            <button
+              className="inline-flex items-center gap-2 rounded-md bg-brand-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-800"
+              onClick={() => downloadUrl(file.url, file.fileName)}
+              type="button"
+            >
+              <Download aria-hidden="true" className="h-3.5 w-3.5" />
+              Descargar
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+async function processFiles(input: {
+  files: File[];
+  height: number;
+  objectUrls: string[];
+  onProgress: (value: number) => void;
+  operation: FileToolOperation;
+  quality: number;
+  width: number;
+}) {
+  if (input.operation === "images-to-pdf") {
+    return imagesToPdf({
+      files: input.files,
+      objectUrls: input.objectUrls,
+      onProgress: input.onProgress,
+      outputName: "imagenes-a-pdf.pdf"
+    });
+  }
+
+  if (input.operation === "jpg-to-pdf") {
+    return imagesToPdf({
+      files: input.files,
+      jpgOnly: true,
+      objectUrls: input.objectUrls,
+      onProgress: input.onProgress,
+      outputName: "jpg-a-pdf.pdf"
+    });
+  }
+
+  if (input.operation === "merge-pdf") {
+    return mergePdfFiles(input);
+  }
+
+  if (input.operation === "split-pdf") {
+    return splitPdfFile({
+      file: input.files[0],
+      objectUrls: input.objectUrls,
+      onProgress: input.onProgress
+    });
+  }
+
+  if (input.operation === "compress-pdf") {
+    input.onProgress(45);
+    return compressPdfFile({
+      file: input.files[0],
+      objectUrls: input.objectUrls
+    });
+  }
+
+  if (input.operation === "pdf-to-jpg") {
+    return pdfToJpg({
+      file: input.files[0],
+      objectUrls: input.objectUrls,
+      onProgress: input.onProgress
+    });
+  }
+
+  if (input.operation === "jpg-to-png") {
+    return convertImages({
+      files: input.files,
+      mimeType: "image/png",
+      objectUrls: input.objectUrls,
+      onProgress: input.onProgress
+    });
+  }
+
+  if (input.operation === "png-to-jpg") {
+    return convertImages({
+      files: input.files,
+      mimeType: "image/jpeg",
+      objectUrls: input.objectUrls,
+      onProgress: input.onProgress,
+      quality: input.quality
+    });
+  }
+
+  if (input.operation === "resize-image") {
+    if (!Number.isFinite(input.width) && !Number.isFinite(input.height)) {
+      throw new Error("Indica ancho, alto o ambos para redimensionar.");
+    }
+
+    return resizeImages({
+      files: input.files,
+      height: Number.isFinite(input.height) ? input.height : undefined,
+      objectUrls: input.objectUrls,
+      onProgress: input.onProgress,
+      width: Number.isFinite(input.width) ? input.width : undefined
+    });
+  }
+
+  return compressImages({
+    files: input.files,
+    objectUrls: input.objectUrls,
+    onProgress: input.onProgress,
+    quality: input.quality
+  });
+}
+
+function getAcceptedKinds(operation: FileToolOperation): FileKind[] {
+  if (operation === "images-to-pdf") return ["jpg", "png", "webp"];
+  if (operation === "jpg-to-pdf" || operation === "jpg-to-png") return ["jpg"];
+  if (operation === "png-to-jpg") return ["png"];
+  if (operation === "resize-image" || operation === "compress-image") {
+    return ["jpg", "png", "webp"];
+  }
+
+  return ["pdf"];
+}
+
+function getAcceptValue(kinds: FileKind[]) {
+  return kinds
+    .flatMap((kind) => {
+      if (kind === "jpg") return [".jpg", ".jpeg", "image/jpeg"];
+      if (kind === "png") return [".png", "image/png"];
+      if (kind === "webp") return [".webp", "image/webp"];
+      return [".pdf", "application/pdf"];
+    })
+    .join(",");
+}
+
+function getActionLabel(operation: FileToolOperation) {
+  const labels: Record<FileToolOperation, string> = {
+    "compress-image": "Comprimir imagen",
+    "compress-pdf": "Comprimir PDF",
+    "images-to-pdf": "Convertir a PDF",
+    "jpg-to-pdf": "Convertir JPG a PDF",
+    "jpg-to-png": "Convertir JPG a PNG",
+    "merge-pdf": "Unir PDF",
+    "pdf-to-jpg": "Convertir PDF a JPG",
+    "png-to-jpg": "Convertir PNG a JPG",
+    "resize-image": "Redimensionar imagen",
+    "split-pdf": "Dividir PDF"
+  };
+
+  return labels[operation];
 }
 
 function TextInput({
@@ -527,14 +912,17 @@ function QrTool() {
 
 function PrimaryButton({
   children,
+  disabled = false,
   onClick
 }: {
   children: ReactNode;
+  disabled?: boolean;
   onClick: () => void;
 }) {
   return (
     <button
-      className="inline-flex w-fit rounded-md bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
+      className="inline-flex w-fit rounded-md bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+      disabled={disabled}
       onClick={onClick}
       type="button"
     >

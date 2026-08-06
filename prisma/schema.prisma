@@ -46,6 +46,15 @@ enum SearchResultStatus {
   NO_RESULTS
 }
 
+enum JobStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+  EXPIRED
+}
+
 model User {
   id              String           @id @default(uuid()) @db.Uuid
   email           String           @unique
@@ -383,6 +392,78 @@ model Tool {
   @@index([status])
   @@index([categorySlug])
   @@index([deletedAt])
+}
+
+model Job {
+  id             String      @id @default(uuid()) @db.Uuid
+  toolSlug       String
+  status         JobStatus   @default(QUEUED)
+  progress       Int         @default(0)
+  requesterHash  String?
+  attempts       Int         @default(0)
+  maxAttempts    Int         @default(2)
+  timeoutSeconds Int         @default(900)
+  metadata       Json?
+  queuedAt       DateTime    @default(now())
+  startedAt      DateTime?
+  completedAt    DateTime?
+  cancelledAt    DateTime?
+  expiresAt      DateTime
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  files          JobFile[]
+  results        JobResult[]
+  errors         JobError[]
+
+  @@index([status, queuedAt])
+  @@index([toolSlug])
+  @@index([expiresAt])
+  @@index([requesterHash, queuedAt])
+}
+
+model JobFile {
+  id           String   @id @default(uuid()) @db.Uuid
+  jobId        String   @db.Uuid
+  role         String
+  originalName String?
+  storedName   String
+  mimeType     String
+  sizeBytes    Int
+  checksum     String?
+  storageKey   String
+  createdAt    DateTime @default(now())
+  job          Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@index([storageKey])
+}
+
+model JobResult {
+  id         String   @id @default(uuid()) @db.Uuid
+  jobId      String   @db.Uuid
+  label      String
+  mimeType   String
+  sizeBytes  Int
+  storageKey String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  job        Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@index([expiresAt])
+}
+
+model JobError {
+  id        String   @id @default(uuid()) @db.Uuid
+  jobId     String   @db.Uuid
+  code      String
+  message   String
+  retryable Boolean  @default(false)
+  createdAt DateTime @default(now())
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@index([code])
 }
 
 model FAQ {

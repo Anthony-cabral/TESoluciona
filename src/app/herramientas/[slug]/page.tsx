@@ -5,8 +5,8 @@ import { Breadcrumbs } from "@/components/content/breadcrumbs";
 import { FAQList } from "@/components/content/faq-list";
 import { Container } from "@/components/layout/container";
 import { JsonLd } from "@/components/seo/json-ld";
-import { ToolRunner } from "@/features/tools/components/tool-runner";
 import { getToolBySlug, tools } from "@/features/solutions/tools";
+import { ToolRunner } from "@/features/tools/components/tool-runner";
 import { breadcrumbJsonLd, faqJsonLd, toolJsonLd } from "@/lib/seo/json-ld";
 
 type ToolPageProps = {
@@ -44,6 +44,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
     { label: "Herramientas", href: "/herramientas" },
     { label: tool.name, href: `/herramientas/${tool.slug}` }
   ];
+  const instructions = tool.instructions ?? tool.useCases;
 
   return (
     <>
@@ -73,21 +74,35 @@ export default async function ToolPage({ params }: ToolPageProps) {
             <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-sm leading-6 text-emerald-950 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-100">
               <h2 className="font-semibold">Privacidad de la herramienta</h2>
               <p className="mt-2">
-                Esta herramienta procesa los datos localmente en tu navegador
-                cuando es posible. No pegues contraseñas reales, tokens, claves
-                privadas, JWT, datos personales o información confidencial de
-                empresa.
+                {tool.privacy?.retention ??
+                  "Esta herramienta procesa los datos localmente cuando es posible. No pegues contrasenas reales, tokens, claves privadas ni informacion confidencial."}
               </p>
+              {tool.privacy ? (
+                <dl className="mt-3 grid gap-2 sm:grid-cols-2">
+                  <div>
+                    <dt className="font-semibold">Procesamiento</dt>
+                    <dd>{tool.privacy.localOnly ? "Local" : "Servidor"}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold">Terceros</dt>
+                    <dd>
+                      {tool.privacy.usesThirdParties
+                        ? "Usa terceros"
+                        : "No usa terceros"}
+                    </dd>
+                  </div>
+                </dl>
+              ) : null}
             </section>
             <ToolRunner slug={tool.slug} />
           </div>
           <aside className="grid gap-6 lg:self-start">
             <section className="rounded-lg border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-900">
               <h2 className="font-semibold text-slate-950 dark:text-white">
-                Cómo usarla
+                Como usarla
               </h2>
               <ul className="mt-3 grid gap-2 pl-5 text-sm text-slate-700 dark:text-slate-200">
-                {tool.useCases.map((item) => (
+                {instructions.map((item) => (
                   <li className="list-disc" key={item}>
                     {item}
                   </li>
@@ -108,6 +123,37 @@ export default async function ToolPage({ params }: ToolPageProps) {
                 ))}
               </ul>
             </section>
+            {tool.limits ? (
+              <section className="rounded-lg border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-900">
+                <h2 className="font-semibold text-slate-950 dark:text-white">
+                  Limites y formatos
+                </h2>
+                <dl className="mt-3 grid gap-2 text-sm text-slate-700 dark:text-slate-200">
+                  <div>
+                    <dt className="font-semibold text-slate-900 dark:text-white">
+                      Entrada
+                    </dt>
+                    <dd>{tool.limits.acceptedFormats.join(", ")}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold text-slate-900 dark:text-white">
+                      Salida
+                    </dt>
+                    <dd>{tool.limits.outputFormats.join(", ")}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold text-slate-900 dark:text-white">
+                      Tamano maximo
+                    </dt>
+                    <dd>
+                      {tool.limits.maxFiles} archivo
+                      {tool.limits.maxFiles === 1 ? "" : "s"} de hasta{" "}
+                      {tool.limits.maxFileSizeMb} MB
+                    </dd>
+                  </div>
+                </dl>
+              </section>
+            ) : null}
           </aside>
         </div>
 

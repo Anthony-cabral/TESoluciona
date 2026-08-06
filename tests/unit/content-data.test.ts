@@ -18,7 +18,7 @@ describe("MVP content data", () => {
     expect(categories).toHaveLength(31);
     expect(articles.length).toBeGreaterThanOrEqual(40);
     expect(errorEntries.length).toBeGreaterThanOrEqual(10);
-    expect(tools.filter((tool) => tool.status === "active")).toHaveLength(10);
+    expect(tools.filter((tool) => tool.status === "active")).toHaveLength(20);
   });
 
   it("uses unique slugs for indexable content", () => {

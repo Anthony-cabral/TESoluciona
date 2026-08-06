@@ -1,6 +1,64 @@
 import type { ToolMetadata } from "@/features/solutions/types";
 
-export const tools: ToolMetadata[] = [
+const localFilePrivacy = {
+  localOnly: true,
+  processingMode: "local" as const,
+  retention:
+    "No se conservan archivos; los resultados viven en memoria hasta limpiar la herramienta o cerrar la pestana.",
+  uploadsFiles: false,
+  usesAi: false,
+  usesThirdParties: false
+};
+
+const pdfFaq = [
+  {
+    question: "Mis archivos se suben al servidor?",
+    answer:
+      "No. En este lote el procesamiento se realiza localmente en tu navegador."
+  },
+  {
+    question: "Puedo usar documentos confidenciales?",
+    answer:
+      "La herramienta no los sube, pero evita trabajar con documentos sensibles en equipos compartidos o navegadores no confiables."
+  }
+];
+
+const imageFaq = [
+  {
+    question: "La imagen pierde calidad?",
+    answer:
+      "Las conversiones pueden recomprimir la imagen segun el formato de salida. Para compresion y JPG puedes ajustar la calidad."
+  },
+  {
+    question: "Se conservan metadatos EXIF?",
+    answer:
+      "Al procesar con Canvas, los metadatos se descartan en la salida generada."
+  }
+];
+
+function createBatchOneTool(
+  input: Omit<
+    ToolMetadata,
+    "batch" | "keywords" | "privacy" | "recent" | "seo" | "status" | "type"
+  >
+): ToolMetadata {
+  return {
+    ...input,
+    batch: "batch-1",
+    keywords: input.tags,
+    privacy: localFilePrivacy,
+    recent: true,
+    seo: {
+      canonicalPath: `/herramientas/${input.slug}`,
+      description: input.summary ?? input.description,
+      title: `${input.name} online privado`
+    },
+    status: "active",
+    type: "tool"
+  };
+}
+
+const mvpTools: ToolMetadata[] = [
   {
     type: "tool",
     name: "Calculadora IPv4",
@@ -281,6 +339,323 @@ export const tools: ToolMetadata[] = [
     status: "active"
   }
 ];
+
+const batchOneTools: ToolMetadata[] = [
+  createBatchOneTool({
+    categorySlug: "pdf",
+    description:
+      "Convierte una o varias imagenes JPG, PNG o WebP en un PDF descargable, con una pagina por imagen.",
+    examples: [
+      "Crear un PDF con fotos de documentos",
+      "Enviar varias capturas en un solo archivo"
+    ],
+    faq: pdfFaq,
+    instructions: [
+      "Selecciona una o varias imagenes.",
+      "Revisa que el orden sea correcto antes de procesar.",
+      "Pulsa Convertir y descarga el PDF generado."
+    ],
+    limits: {
+      acceptedFormats: ["JPG", "PNG", "WebP"],
+      maxFileSizeMb: 25,
+      maxFiles: 20,
+      outputFormats: ["PDF"]
+    },
+    name: "Imagenes a PDF",
+    operation: "images-to-pdf",
+    popular: true,
+    relatedSlugs: ["jpg-a-pdf", "unir-pdf"],
+    slug: "imagenes-a-pdf",
+    summary:
+      "Crea un PDF localmente a partir de varias imagenes, sin subirlas a Tesoluciona.",
+    tags: ["pdf", "imagenes", "conversion", "privado"],
+    useCases: [
+      "Agrupar fotos de documentos.",
+      "Enviar varias capturas en un solo PDF.",
+      "Convertir imagenes sin usar servicios externos."
+    ]
+  }),
+  createBatchOneTool({
+    categorySlug: "pdf",
+    description:
+      "Convierte una o varias imagenes JPG en un PDF con una pagina por archivo.",
+    examples: ["Convertir una foto escaneada en PDF", "Agrupar recibos JPG"],
+    faq: pdfFaq,
+    instructions: [
+      "Selecciona archivos JPG o JPEG.",
+      "Comprueba que no esten vacios ni corruptos.",
+      "Genera el PDF y descargalo."
+    ],
+    limits: {
+      acceptedFormats: ["JPG", "JPEG"],
+      maxFileSizeMb: 25,
+      maxFiles: 20,
+      outputFormats: ["PDF"]
+    },
+    name: "JPG a PDF",
+    operation: "jpg-to-pdf",
+    popular: true,
+    relatedSlugs: ["imagenes-a-pdf", "jpg-a-png"],
+    slug: "jpg-a-pdf",
+    summary: "Convierte imagenes JPG a PDF desde el navegador.",
+    tags: ["jpg", "pdf", "conversion"],
+    useCases: [
+      "Crear PDF desde fotos escaneadas.",
+      "Agrupar JPG de un tramite.",
+      "Generar un PDF local sin subir archivos."
+    ]
+  }),
+  createBatchOneTool({
+    categorySlug: "pdf",
+    description:
+      "Une varios documentos PDF en un solo archivo manteniendo el orden seleccionado.",
+    examples: ["Unir anexos", "Combinar reportes PDF"],
+    faq: pdfFaq,
+    instructions: [
+      "Selecciona dos o mas PDF.",
+      "Confirma el orden de seleccion.",
+      "Une los archivos y descarga el resultado."
+    ],
+    limits: {
+      acceptedFormats: ["PDF"],
+      maxFileSizeMb: 25,
+      maxFiles: 10,
+      outputFormats: ["PDF"]
+    },
+    name: "Unir PDF",
+    operation: "merge-pdf",
+    popular: true,
+    relatedSlugs: ["dividir-pdf", "comprimir-pdf"],
+    slug: "unir-pdf",
+    summary: "Combina varios PDF localmente en un unico archivo.",
+    tags: ["pdf", "unir", "documentos"],
+    useCases: [
+      "Unir anexos en un solo archivo.",
+      "Preparar un reporte con varias fuentes.",
+      "Combinar PDF sin subir documentos."
+    ]
+  }),
+  createBatchOneTool({
+    categorySlug: "pdf",
+    description:
+      "Divide un PDF en archivos independientes, uno por pagina, sin subir el documento.",
+    examples: ["Separar facturas", "Extraer paginas individuales"],
+    faq: pdfFaq,
+    instructions: [
+      "Selecciona un PDF.",
+      "La herramienta generara un archivo por pagina.",
+      "Descarga las paginas que necesites."
+    ],
+    limits: {
+      acceptedFormats: ["PDF"],
+      maxFileSizeMb: 25,
+      maxFiles: 1,
+      outputFormats: ["PDF"]
+    },
+    name: "Dividir PDF",
+    operation: "split-pdf",
+    popular: true,
+    relatedSlugs: ["unir-pdf", "pdf-a-jpg"],
+    slug: "dividir-pdf",
+    summary: "Separa un PDF en paginas individuales desde tu navegador.",
+    tags: ["pdf", "dividir", "paginas"],
+    useCases: [
+      "Separar paginas de un documento.",
+      "Extraer facturas o anexos individuales.",
+      "Generar archivos por pagina localmente."
+    ]
+  }),
+  createBatchOneTool({
+    categorySlug: "pdf",
+    description:
+      "Optimiza la estructura interna de un PDF. No rompe contrasenas ni promete recomprimir imagenes internas.",
+    examples: [
+      "Reducir metadatos y estructura",
+      "Reintentar guardado optimizado"
+    ],
+    faq: [
+      ...pdfFaq,
+      {
+        question: "Siempre reduce el tamano?",
+        answer:
+          "No. Esta compresion local es basica; algunos PDF ya estan optimizados y pueden quedar igual o crecer ligeramente."
+      }
+    ],
+    instructions: [
+      "Selecciona un PDF no protegido.",
+      "Procesa el archivo localmente.",
+      "Compara el tamano original y el optimizado."
+    ],
+    limits: {
+      acceptedFormats: ["PDF"],
+      maxFileSizeMb: 25,
+      maxFiles: 1,
+      outputFormats: ["PDF"]
+    },
+    name: "Comprimir PDF",
+    operation: "compress-pdf",
+    popular: true,
+    relatedSlugs: ["unir-pdf", "dividir-pdf"],
+    slug: "comprimir-pdf",
+    summary: "Intenta optimizar un PDF localmente sin enviar documentos.",
+    tags: ["pdf", "comprimir", "privacidad"],
+    useCases: [
+      "Probar una optimizacion rapida.",
+      "Reducir metadatos del PDF.",
+      "Comprobar si un PDF puede quedar mas ligero."
+    ]
+  }),
+  createBatchOneTool({
+    categorySlug: "pdf",
+    description:
+      "Renderiza las paginas de un PDF como imagenes JPG descargables.",
+    examples: ["Crear miniaturas", "Extraer una pagina como imagen"],
+    faq: pdfFaq,
+    instructions: [
+      "Selecciona un PDF.",
+      "Espera a que se rendericen las paginas.",
+      "Descarga las imagenes JPG generadas."
+    ],
+    limits: {
+      acceptedFormats: ["PDF"],
+      maxFileSizeMb: 20,
+      maxFiles: 1,
+      outputFormats: ["JPG"]
+    },
+    name: "PDF a JPG",
+    operation: "pdf-to-jpg",
+    popular: true,
+    relatedSlugs: ["dividir-pdf", "jpg-a-pdf"],
+    slug: "pdf-a-jpg",
+    summary: "Convierte paginas de PDF a JPG en el navegador.",
+    tags: ["pdf", "jpg", "imagenes"],
+    useCases: [
+      "Crear miniaturas de paginas.",
+      "Extraer una pagina como imagen.",
+      "Compartir una pagina PDF como JPG."
+    ]
+  }),
+  createBatchOneTool({
+    categorySlug: "imagenes",
+    description: "Convierte imagenes JPG a PNG usando Canvas local.",
+    examples: ["Crear PNG para edicion", "Convertir capturas JPG"],
+    faq: imageFaq,
+    instructions: [
+      "Selecciona uno o varios JPG.",
+      "Convierte los archivos.",
+      "Descarga los PNG generados."
+    ],
+    limits: {
+      acceptedFormats: ["JPG", "JPEG"],
+      maxFileSizeMb: 15,
+      maxFiles: 20,
+      outputFormats: ["PNG"]
+    },
+    name: "JPG a PNG",
+    operation: "jpg-to-png",
+    popular: true,
+    relatedSlugs: ["png-a-jpg", "comprimir-imagen"],
+    slug: "jpg-a-png",
+    summary: "Convierte JPG a PNG sin subir imagenes.",
+    tags: ["jpg", "png", "imagenes"],
+    useCases: [
+      "Preparar una imagen para edicion.",
+      "Convertir capturas JPG a PNG.",
+      "Procesar varias imagenes localmente."
+    ]
+  }),
+  createBatchOneTool({
+    categorySlug: "imagenes",
+    description: "Convierte PNG a JPG con fondo blanco para transparencias.",
+    examples: ["Preparar imagenes para correo", "Reducir peso de PNG grandes"],
+    faq: imageFaq,
+    instructions: [
+      "Selecciona uno o varios PNG.",
+      "Ajusta la calidad si quieres menor peso.",
+      "Descarga los JPG generados."
+    ],
+    limits: {
+      acceptedFormats: ["PNG"],
+      maxFileSizeMb: 15,
+      maxFiles: 20,
+      outputFormats: ["JPG"]
+    },
+    name: "PNG a JPG",
+    operation: "png-to-jpg",
+    popular: true,
+    relatedSlugs: ["jpg-a-png", "redimensionar-imagen"],
+    slug: "png-a-jpg",
+    summary: "Convierte PNG a JPG localmente.",
+    tags: ["png", "jpg", "imagenes"],
+    useCases: [
+      "Reducir el peso de PNG grandes.",
+      "Convertir imagenes para formularios.",
+      "Exportar PNG con transparencia sobre fondo blanco."
+    ]
+  }),
+  createBatchOneTool({
+    categorySlug: "imagenes",
+    description:
+      "Cambia el ancho y alto de imagenes JPG, PNG o WebP respetando proporcion cuando indiques solo una dimension.",
+    examples: ["Crear miniaturas", "Reducir imagenes para web"],
+    faq: imageFaq,
+    instructions: [
+      "Selecciona imagenes.",
+      "Indica ancho, alto o ambos.",
+      "Procesa y descarga los resultados."
+    ],
+    limits: {
+      acceptedFormats: ["JPG", "PNG", "WebP"],
+      maxFileSizeMb: 15,
+      maxFiles: 20,
+      outputFormats: ["JPG", "PNG"]
+    },
+    name: "Redimensionar imagen",
+    operation: "resize-image",
+    popular: true,
+    relatedSlugs: ["comprimir-imagen", "png-a-jpg"],
+    slug: "redimensionar-imagen",
+    summary: "Redimensiona imagenes en tu navegador sin subir archivos.",
+    tags: ["imagenes", "resize", "miniaturas"],
+    useCases: [
+      "Crear miniaturas.",
+      "Reducir imagenes para web.",
+      "Ajustar dimensiones para formularios."
+    ]
+  }),
+  createBatchOneTool({
+    categorySlug: "imagenes",
+    description:
+      "Comprime imagenes generando una version JPG optimizada con calidad configurable.",
+    examples: ["Reducir peso para web", "Preparar imagenes para formularios"],
+    faq: imageFaq,
+    instructions: [
+      "Selecciona imagenes JPG, PNG o WebP.",
+      "Elige la calidad de salida.",
+      "Descarga las versiones comprimidas."
+    ],
+    limits: {
+      acceptedFormats: ["JPG", "PNG", "WebP"],
+      maxFileSizeMb: 15,
+      maxFiles: 20,
+      outputFormats: ["JPG"]
+    },
+    name: "Comprimir imagen",
+    operation: "compress-image",
+    popular: true,
+    relatedSlugs: ["redimensionar-imagen", "jpg-a-png"],
+    slug: "comprimir-imagen",
+    summary: "Reduce peso de imagenes localmente con calidad configurable.",
+    tags: ["imagenes", "compresion", "web"],
+    useCases: [
+      "Reducir peso para web.",
+      "Preparar imagenes para envio.",
+      "Crear versiones JPG optimizadas."
+    ]
+  })
+];
+
+export const tools: ToolMetadata[] = [...mvpTools, ...batchOneTools];
 
 export function getToolBySlug(slug: string) {
   return tools.find((tool) => tool.slug === slug && tool.status === "active");
